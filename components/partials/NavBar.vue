@@ -1,7 +1,7 @@
 <template>
 <nav>
     <div class="container">
-        <div class="logo">SOUND</div>
+        <nuxt-link class="logo" to="/">SOUND</nuxt-link>
         <input type="text" name="search">
         <div class="user">{{user.name}}</div>
     </div>
@@ -28,6 +28,10 @@ nav {
     margin-bottom: 50px;
     top: 0;
     z-index: 2;
+
+    a {
+        text-decoration: none;
+    }
 }
 
 .logo {

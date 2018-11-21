@@ -1,6 +1,6 @@
 <template>
 <div class="player">
-    <p>{{ song.user.name }} [REPOSTED] {{ song.song.title }} [BY] {{ song.song.artist.name }}</p>
+	<nuxt-link :to="'/track/' + song.song.title" class="title">{{ song.user.name }} [REPOSTED] {{ song.song.title }} [BY] {{ song.song.artist.name }}</nuxt-link>
     <div class="player-controls">
         <!-- <div>
             <a v-on:click.prevent="stop" title="Stop" href="#">		<svg width="18px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -167,8 +167,15 @@ $player-text-color: $player-link-color;
 	box-shadow: 0 5px 8px rgba(0,0,0,0.15);
 	color: $player-text-color;
 	// display: inline-block;
-    margin-bottom: 1em;
+	margin-bottom: 1em;
+	padding-top: 0.5em; 
 	line-height: 1.5625;
+
+	.title {
+		padding-left: 1em;
+		text-decoration: none;
+		color: black;
+	}
 }
 
 .progress-container {
@@ -179,6 +186,7 @@ $player-text-color: $player-link-color;
 .player-controls {
 	display: flex;
 	border-top: 1px solid $player-border-color;
+	margin-top: 1em;
 	
 	> div {
 		border-right: 1px solid $player-border-color;
