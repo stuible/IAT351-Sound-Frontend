@@ -1,6 +1,7 @@
 <template>
 <div class="player">
-	<nuxt-link :to="'/track/' + song.song.title" class="title">{{ song.user.name }} [REPOSTED] {{ song.song.title }} [BY] {{ song.song.artist.name }}</nuxt-link>
+    <nuxt-link :to="'/track/' + song.song.title" class="title">{{ song.user.name }} [REPOSTED] {{ song.song.title }} [BY] {{ song.song.artist.name }}</nuxt-link>
+    <p>REPOST TIMESTAMP: {{song.timestamp}}</p>
     <div class="player-controls">
         <!-- <div>
             <a v-on:click.prevent="stop" title="Stop" href="#">		<svg width="18px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -17,6 +18,9 @@
                 <div class="player-time-current">{{ currentTime }}</div>
                 <div class="player-time-total">{{ durationTime }}</div>
             </div>
+        </div>
+        <div>
+            <a href="#">{{likeCount}}</a>
         </div>
         <!-- <div>
             <a v-on:click.prevent="download" href="#">		<svg width="18px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">		<path fill="currentColor" d="M15,7h-3V1H8v6H5l5,5L15,7z M19.338,13.532c-0.21-0.224-1.611-1.723-2.011-2.114C17.062,11.159,16.683,11,16.285,11h-1.757l3.064,2.994h-3.544c-0.102,0-0.194,0.052-0.24,0.133L12.992,16H7.008l-0.816-1.873c-0.046-0.081-0.139-0.133-0.24-0.133H2.408L5.471,11H3.715c-0.397,0-0.776,0.159-1.042,0.418c-0.4,0.392-1.801,1.891-2.011,2.114c-0.489,0.521-0.758,0.936-0.63,1.449l0.561,3.074c0.128,0.514,0.691,0.936,1.252,0.936h16.312c0.561,0,1.124-0.422,1.252-0.936l0.561-3.074C20.096,14.468,19.828,14.053,19.338,13.532z"/>		</svg>		</a>
@@ -37,9 +41,9 @@
 
 <script>
 const convertTimeHHMMSS = (val) => {
-	let hhmmss = new Date(val * 1000).toISOString().substr(11, 8);
+    let hhmmss = new Date(val * 1000).toISOString().substr(11, 8);
 
-	return hhmmss.indexOf("00:") === 0 ? hhmmss.substr(3) : hhmmss;
+    return hhmmss.indexOf("00:") === 0 ? hhmmss.substr(3) : hhmmss;
 };
 
 export default {
@@ -49,109 +53,123 @@ export default {
             required: true
         },
         autoPlay: {
-			type: Boolean,
-			default: false
-		},
-		loop: {
-			type: Boolean,
-			default: false
-		}
+            type: Boolean,
+            default: false
+        },
+        loop: {
+            type: Boolean,
+            default: false
+        }
     },
     methods: {
         likeClicked: function () {
             console.log('clicked')
         }
     },
-	data: () => ({
-		audio: undefined,
-		currentSeconds: 0,
-		durationSeconds: 0,
-		innerLoop: false,
-		loaded: false,
-		playing: false,
-		previousVolume: 35,
-		showVolume: false,
-		volume: 100
-	}),
-	computed: {
-		currentTime() {
-			return convertTimeHHMMSS(this.currentSeconds);
-		},
-		durationTime() {
-			return convertTimeHHMMSS(this.durationSeconds);
-		},
-		percentComplete() {
-			return parseInt(this.currentSeconds / this.durationSeconds * 100);
-		},
-		muted() {
-			return this.volume / 100 === 0;
-		}
-	},
-	watch: {
-		playing(value) {
-			if (value) { return this.audio.play(); }
-			this.audio.pause();
-		},
-		volume(value) {
-			this.showVolume = false;
-			this.audio.volume = this.volume / 100;
-		}
-	},
-	methods: {
-		download() {
-			this.stop();
-			window.open(this.file, 'download');
-		},
-		load() {
-			if (this.audio.readyState >= 2) {
-				this.loaded = true;
-				this.durationSeconds = parseInt(this.audio.duration);
-				return this.playing = this.autoPlay;
-			}
+    data: () => ({
+        audio: undefined,
+        currentSeconds: 0,
+        durationSeconds: 0,
+        innerLoop: false,
+        loaded: false,
+        playing: false,
+        previousVolume: 35,
+        showVolume: false,
+		volume: 100,
+		
+    }),
+    computed: {
+		likeCount() {
 
-			throw new Error('Failed to load sound file.');
-		},
-		mute() {
-			if (this.muted) {
-				return this.volume = this.previousVolume;
+			let count = 0;
+			for (var like in this.song.song.likes) {
+				count = count + 1;
 			}
+			return count
+		},
+        currentTime() {
+            return convertTimeHHMMSS(this.currentSeconds);
+        },
+        durationTime() {
+            return convertTimeHHMMSS(this.durationSeconds);
+        },
+        percentComplete() {
+            return parseInt(this.currentSeconds / this.durationSeconds * 100);
+        },
+        muted() {
+            return this.volume / 100 === 0;
+        }
+    },
+    watch: {
+        playing(value) {
+            if (value) {
+                return this.audio.play();
+            }
+            this.audio.pause();
+        },
+        volume(value) {
+            this.showVolume = false;
+            this.audio.volume = this.volume / 100;
+        }
+    },
+    methods: {
+        download() {
+            this.stop();
+            window.open(this.file, 'download');
+        },
+        load() {
+            if (this.audio.readyState >= 2) {
+                this.loaded = true;
+                this.durationSeconds = parseInt(this.audio.duration);
+                return this.playing = this.autoPlay;
+            }
 
-			this.previousVolume = this.volume;
-			this.volume = 0;
-		},
-		seek(e) {
-			if (!this.playing || e.target.tagName === 'SPAN') {
-				return;
-			}
-			
-			const el = e.target.getBoundingClientRect();
-			const seekPos = (e.clientX - el.left) / el.width;
+            throw new Error('Failed to load sound file.');
+        },
+        mute() {
+            if (this.muted) {
+                return this.volume = this.previousVolume;
+            }
 
-			this.audio.currentTime = parseInt(this.audio.duration * seekPos);
-		},
-		stop() {
-			this.playing = false;
-			this.audio.currentTime = 0;
-		},
-		update(e) {
-			this.currentSeconds = parseInt(this.audio.currentTime);
-		}
-	},
-	created() {
-		this.innerLoop = this.loop;
-	},
-	mounted() {
-		this.audio = this.$el.querySelectorAll('audio')[0];
-		this.audio.addEventListener('timeupdate', this.update);
-		this.audio.addEventListener('loadeddata', this.load);
-		this.audio.addEventListener('pause', () => { this.playing = false; });
-		this.audio.addEventListener('play', () => { this.playing = true; });
-	}
+            this.previousVolume = this.volume;
+            this.volume = 0;
+        },
+        seek(e) {
+            if (!this.playing || e.target.tagName === 'SPAN') {
+                return;
+            }
+
+            const el = e.target.getBoundingClientRect();
+            const seekPos = (e.clientX - el.left) / el.width;
+
+            this.audio.currentTime = parseInt(this.audio.duration * seekPos);
+        },
+        stop() {
+            this.playing = false;
+            this.audio.currentTime = 0;
+        },
+        update(e) {
+            this.currentSeconds = parseInt(this.audio.currentTime);
+        }
+    },
+    created() {
+        this.innerLoop = this.loop;
+    },
+    mounted() {
+        this.audio = this.$el.querySelectorAll('audio')[0];
+        this.audio.addEventListener('timeupdate', this.update);
+        this.audio.addEventListener('loadeddata', this.load);
+        this.audio.addEventListener('pause', () => {
+            this.playing = false;
+        });
+        this.audio.addEventListener('play', () => {
+            this.playing = true;
+        });
+    }
 }
 </script>
 
 <style lang="scss" scoped>
-
 $player-bg: #fff;
 $player-border-color: darken($player-bg, 12%);
 $player-link-color: darken($player-bg, 75%);
@@ -159,84 +177,82 @@ $player-progress-color: $player-border-color;
 $player-seeker-color: $player-link-color;
 $player-text-color: $player-link-color;
 
-
 .player {
-	background-color: $player-bg;
-	border: 1px solid $player-border-color;
-	border-radius: 5px;
-	box-shadow: 0 5px 8px rgba(0,0,0,0.15);
-	color: $player-text-color;
-	// display: inline-block;
-	margin-bottom: 1em;
-	padding-top: 0.5em; 
-	line-height: 1.5625;
+    background-color: $player-bg;
+    border: 1px solid $player-border-color;
+    border-radius: 5px;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15);
+    color: $player-text-color;
+    // display: inline-block;
+    margin-bottom: 1em;
+    padding-top: 0.5em;
+    line-height: 1.5625;
 
-	.title {
-		padding-left: 1em;
-		text-decoration: none;
-		color: black;
-	}
+    .title {
+        padding-left: 1em;
+        text-decoration: none;
+        color: black;
+    }
 }
 
 .progress-container {
-	display: flex;
-	flex: 1;
+    display: flex;
+    flex: 1;
 }
 
 .player-controls {
-	display: flex;
-	border-top: 1px solid $player-border-color;
-	margin-top: 1em;
-	
-	> div {
-		border-right: 1px solid $player-border-color;
-		
-		
-		&:last-child {
-			border-right: none;
-		}
-		
-		a {
-			color: $player-link-color;
-			display: block;
-			line-height: 0;
-			padding: 1em;
-			text-decoration: none;
-		}
-	}
+    display: flex;
+    border-top: 1px solid $player-border-color;
+    margin-top: 1em;
+
+    >div {
+        border-right: 1px solid $player-border-color;
+
+        &:last-child {
+            border-right: none;
+        }
+
+        a {
+            color: $player-link-color;
+            display: block;
+            line-height: 0;
+            padding: 1em;
+            text-decoration: none;
+        }
+    }
 }
 
 .player-progress {
-	background-color: $player-progress-color;
-	cursor: pointer;
-	height: 50%;
-	width: 100%;
-	// min-width: 200px;
-	// display: flex;
-	// flex: 1;
-	position: relative;
-	
-	.player-seeker {
-		background-color: $player-seeker-color;
-		bottom: 0;
-		left: 0;
-		position: absolute;
-		top: 0;
-	}
+    background-color: $player-progress-color;
+    cursor: pointer;
+    height: 50%;
+    width: 100%;
+    // min-width: 200px;
+    // display: flex;
+    // flex: 1;
+    position: relative;
+
+    .player-seeker {
+        background-color: $player-seeker-color;
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        top: 0;
+    }
 }
 
 .player-time {
-	display: flex;
-	justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 
-	.player-time-current {
-		font-weight: 700;
-		padding-left: 5px;
-	}
+    .player-time-current {
+        font-weight: 700;
+        padding-left: 5px;
+    }
 
-	.player-time-total {
-		opacity: 0.5;
-		padding-right: 5px;
-	}
+    .player-time-total {
+        opacity: 0.5;
+        padding-right: 5px;
+    }
 }
 </style>
