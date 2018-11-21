@@ -1,11 +1,11 @@
 <template>
 <div class="song">
-    <p>{{ song.user.name }} [REsongED] {{ song.song.title }} [BY] {{ song.song.artist.name }}</p>
+    <p>{{ song.user.name }} [REPOSTED] {{ song.song.title }} [BY] {{ song.song.artist.name }}</p>
     <audio controls>
         <source :src="song.song.file.data.full_url" type="audio/mpeg">
       Your browser does not support the audio element.
       </audio>
-    <button v-on:click="onLikeClicked">LIKE</button>
+    <button v-on:click="likeClicked">LIKE</button>
 </div>
 </template>
 
@@ -16,7 +16,12 @@ export default {
             type: Object,
             required: true
         }
+    },
+    methods: {
+    likeClicked: function(){
+      console.log('clicked')
     }
+  }
 }
 </script>
 
