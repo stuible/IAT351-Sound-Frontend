@@ -1,13 +1,6 @@
 <template>
   <div>
-    <nav>
-        <a class="navbar-item" href="/">
-        </a>
-
-        <div class="navbar-burger">
-        </div>
-    </nav>
-
+    <nav-bar/>
     <section class="main-content columns">
       <div>
         <nuxt/>
@@ -17,25 +10,12 @@
 </template>
 
 <script>
+import NavBar from '~/components/partials/NavBar.vue'
+
 export default {
-    data() {
-        return {
-            items: [{
-                    title: 'Home',
-                    icon: 'home',
-                    to: {
-                        name: 'index'
-                    }
-                },
-                {
-                    title: 'Song',
-                    icon: 'lightbulb',
-                    to: {
-                        name: 'song'
-                    }
-                }
-            ]
-        }
-    }
+  components: {
+        NavBar
+    },
+    
 }
 </script>
