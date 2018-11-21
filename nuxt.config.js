@@ -27,6 +27,8 @@ module.exports = {
   ** Global CSS
   */
   css: [
+    'normalize.css/normalize.css',
+    'flexboxgrid/css/flexboxgrid.min.css' 
   ],
   /*
   ** Environment Variables
@@ -36,6 +38,9 @@ module.exports = {
       baseUrl: 'http://soundbackend.stuible.com/',
       apiUrl: 'http://soundbackend.stuible.com/_/',
       token: 'access_token=gonefisching'
+    },
+    user: {
+      name: 'Brian'
     }
   },
   /*
@@ -50,6 +55,11 @@ module.exports = {
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios',
+    'nuxt-sass-resources-loader'
+    // ['nuxt-sass-resources-loader', '@/assets/scss/base.scss'],
+  ],
+  sassResources: [
+    '@/assets/scss/base.scss'
   ],
   /*
   ** Axios module configuration
