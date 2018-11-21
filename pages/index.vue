@@ -32,7 +32,7 @@ export default {
         app,
         env
     }) {
-        const { data } = await app.$axios.get(env.api.apiUrl + 'items/reposts?fields=*.*.*',
+        const { data } = await app.$axios.get(env.api.apiUrl + 'items/users?fields=*.*.*.*.*.*&single=1&filter[name]=' + env.user.name,
             JSON.stringify({
                 // filter: { published: true },
                 // sort: {_created:-1},
@@ -42,29 +42,20 @@ export default {
                     'Content-Type': 'application/json'
                 }
             })
-            console.log(data)
 
-        let likes = await app.$axios.get(env.api.apiUrl +'items/likes?fields=*.*.*&filter%5Buser.name%5D=' + env.user.name,
-          JSON.stringify({
-                // filter: { published: true },
-                // sort: {_created:-1},
-                // populate: 1
-            }), {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-                }).then(function(response) {
-                console.log(response.data)
-                return response.data
-              }).catch(function(error) {
-                console.log(error.response.data);
-              })
-          
-  
+            let followerPosts = [];
+
+            Object.entries(data.data.follows).forEach(([key, val]) => {
+              Object.entries(val.is_following.reposts).forEach(([key, repost]) => {
+                let song = {user: val.is_following, song: repost.song, timestamp: repost.timestamp}
+                followerPosts.push(song)
+              });
+            });
+            console.log(followerPosts);
 
         return {
-            posts: data.data,
-            userlikes: likes.data,
+            posts: followerPosts,
+            userlikes: data.data.likes,
             user: env.user
         }
     },
