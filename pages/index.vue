@@ -1,21 +1,19 @@
 <template>
   <section class="section">
     <p>THIS IS THE STREAM PAGE</p>
-    
-    <div class="song" v-for="post in posts" :key="post.id">
-      <p>{{ post.user.name }} [REPOSTED] {{ post.song.title }} [BY] {{ post.song.artist.name }}</p>
-      <audio controls>
-        <source :src="post.song.file.data.full_url" type="audio/mpeg">
-      Your browser does not support the audio element.
-      </audio>
-      <a v-on:click="clickLike">LIKE</a>
-    </div>
+
+    <audio-player-widget v-for="post in posts" :key="post.id" :song="post"/>
   </section>
 </template>
 
 <script>
+import AudioPlayerWidget from '~/components/AudioPlayerWidget.vue'
+
+
 export default {
-  name: 'Stream',
+  components: {
+        AudioPlayerWidget
+    },
   async asyncData ({ app, env }) {
     const { data } = await app.$axios.get(env.api.apiUrl + 'items/reposts?fields=*.*.*',
     JSON.stringify({
@@ -26,16 +24,19 @@ export default {
     {
       headers: { 'Content-Type': 'application/json' }
     })
-    return { posts: data.data }
+    return { 
+      posts: data.data 
+
+      }
   },
   methods: {
-    clickLike: function(){
-
+    onLikeClicked: function(){
+      console.log('clicked')
     }
   }
 }
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 
 </style>
