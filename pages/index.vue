@@ -30,9 +30,7 @@ export default {
       }
   },
   methods: {
-    onLikeClicked: function(){
-      console.log('clicked')
-    }
+
   }
 }
 </script>
