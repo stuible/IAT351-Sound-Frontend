@@ -12,7 +12,7 @@
 export default {
 props: {
         likes: {
-            type: Object,
+            type: Array,
             required: true
         },
     }
