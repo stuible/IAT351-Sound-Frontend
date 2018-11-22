@@ -1,8 +1,8 @@
 <template>
 <nav>
     <div class="container">
-        <nuxt-link class="logo" to="/">SOUND</nuxt-link>
-        <input type="text" name="search">
+        <nuxt-link class="logo" to="/">&nbsp;SOUND&nbsp;</nuxt-link>
+        <input type="text" name="search" class="search">
         <div class="user">{{user.name}}</div>
     </div>
 </nav>
@@ -32,6 +32,11 @@ nav {
     a {
         text-decoration: none;
     }
+
+}
+
+.search {
+    margin: 0 auto;
 }
 
 .logo {
@@ -44,11 +49,12 @@ nav {
 
     &:before {
         content: '';
-        border-bottom: 6px solid orange;
+        border-bottom: 8px solid $orangeColour;
         width: 100%;
         position: absolute;
         right: 0;
-        top: calc(50% - 3px);
+        top: calc(50% - 4px);
+        z-index: -1;
     }
 }
 

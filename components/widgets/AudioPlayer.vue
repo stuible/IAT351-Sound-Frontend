@@ -22,7 +22,7 @@
             </div>
         </div>
         <div>
-            <a href="#">{{likeCount}}</a>
+            <a href="#" class="likes" v-bind:class="{ active: this.liked }">{{likeCount}} <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 492.719 492.719" style="enable-background:new 0 0 492.719 492.719;" xml:space="preserve"> <g> <g id="Icons_18_"> <path d="M492.719,166.008c0-73.486-59.573-133.056-133.059-133.056c-47.985,0-89.891,25.484-113.302,63.569		c-23.408-38.085-65.332-63.569-113.316-63.569C59.556,32.952,0,92.522,0,166.008c0,40.009,17.729,75.803,45.671,100.178		l188.545,188.553c3.22,3.22,7.587,5.029,12.142,5.029c4.555,0,8.922-1.809,12.142-5.029l188.545-188.553		C474.988,241.811,492.719,206.017,492.719,166.008z"/></g></g></svg></a>
         </div>
         <!-- <div>
             <a v-on:click.prevent="download" href="#">		<svg width="18px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">		<path fill="currentColor" d="M15,7h-3V1H8v6H5l5,5L15,7z M19.338,13.532c-0.21-0.224-1.611-1.723-2.011-2.114C17.062,11.159,16.683,11,16.285,11h-1.757l3.064,2.994h-3.544c-0.102,0-0.194,0.052-0.24,0.133L12.992,16H7.008l-0.816-1.873c-0.046-0.081-0.139-0.133-0.24-0.133H2.408L5.471,11H3.715c-0.397,0-0.776,0.159-1.042,0.418c-0.4,0.392-1.801,1.891-2.011,2.114c-0.489,0.521-0.758,0.936-0.63,1.449l0.561,3.074c0.128,0.514,0.691,0.936,1.252,0.936h16.312c0.561,0,1.124-0.422,1.252-0.936l0.561-3.074C20.096,14.468,19.828,14.053,19.338,13.532z"/>		</svg>		</a>
@@ -52,6 +52,10 @@ export default {
         song: {
             type: Object,
             required: true
+		},
+		user: {
+            type: Object,
+            required: true
         },
         autoPlay: {
             type: Boolean,
@@ -76,7 +80,8 @@ export default {
         playing: false,
         previousVolume: 35,
         showVolume: false,
-        volume: 100,
+        volume: 30,
+        // liked: false,
         likeTimestamp: 0,
         likes: {}
     }),
@@ -102,11 +107,26 @@ export default {
         // 	// console.log(this.likes.song_timestamp)
         // 	return this.likes;
         // },
-        
+
         // getLikeTimestamp(){
         // 	if(this.likes.length >= 1)return this.likes[0].song_timestamp
         // 	else  return false
         // },
+        liked() {
+
+            // for (var like in this.song.song.likes) {
+            //     // if (this.song.song.likes.hasOwnProperty('user')) {
+            //        console.log(like)
+            //     // }
+            // }
+            // if(this.likes.user)
+            const values = Object.values(this.song.song.likes)
+            for (const value of values) {
+				console.log(value.user.name)
+				if (value.user.name == this.user.name) return true
+            }
+            return false;
+        },
         muted() {
             return this.volume / 100 === 0;
         }
@@ -133,8 +153,8 @@ export default {
             if (this.audio.readyState >= 2) {
                 this.loaded = true;
                 this.durationSeconds = parseInt(this.audio.duration);
-				this.likes = this.song.song.likes;
-				// console.log(this.song.song.likes[0].song_timestamp)
+                this.likes = this.song.song.likes;
+                // console.log(this.song.song.likes[0].song_timestamp)
                 // this.likeTimestamp = this.likes[0].song_timestamp;
 
                 return this.playing = this.autoPlay;
@@ -168,22 +188,22 @@ export default {
             this.currentSeconds = parseInt(this.audio.currentTime);
         },
         timeStringToFloat(time) {
-			var hoursMinutes = time.split(/[.:]/);
-			// console.log('hoursminutes: ' + hoursMinutes)
-			var hours = parseInt(hoursMinutes[0], 10);
-			// console.log('hours: ' + hours)
-			var minutes = hoursMinutes[1] ? parseInt(hoursMinutes[1], 10) : 0;
-			// console.log('minutes: ' + minutes)
-			var seconds = hoursMinutes[1] ? parseInt(hoursMinutes[2], 10) : 0;
-			// console.log('seconds: ' + seconds)
+            var hoursMinutes = time.split(/[.:]/);
+            // console.log('hoursminutes: ' + hoursMinutes)
+            var hours = parseInt(hoursMinutes[0], 10);
+            // console.log('hours: ' + hours)
+            var minutes = hoursMinutes[1] ? parseInt(hoursMinutes[1], 10) : 0;
+            // console.log('minutes: ' + minutes)
+            var seconds = hoursMinutes[1] ? parseInt(hoursMinutes[2], 10) : 0;
+            // console.log('seconds: ' + seconds)
             return (minutes * 60) + seconds
-		},
-		likePosition(liketimestamp) {
+        },
+        likePosition(liketimestamp) {
             if (this.likes.length >= 1) {
-				console.log('Timestamp: ' + this.likes[0].song_timestamp)
-                console.log('Timestamp to float: ' + this.timeStringToFloat(this.likes[0].song_timestamp))
-                console.log('duration in seconds: ' + this.durationSeconds)
-                console.log((this.timeStringToFloat(this.likes[0].song_timestamp) / this.durationSeconds) * 100)
+                // console.log('Timestamp: ' + this.likes[0].song_timestamp)
+                // console.log('Timestamp to float: ' + this.timeStringToFloat(this.likes[0].song_timestamp))
+                // console.log('duration in seconds: ' + this.durationSeconds)
+                // console.log((this.timeStringToFloat(this.likes[0].song_timestamp) / this.durationSeconds) * 100)
             }
             if (this.likes.length >= 1) return (this.timeStringToFloat(liketimestamp) / this.durationSeconds) * 100
             else return '0'
@@ -256,6 +276,10 @@ $player-text-color: $player-link-color;
             padding: 1em;
             text-decoration: none;
         }
+    }
+
+    .active {
+        background-color: $orangeColour;
     }
 }
 

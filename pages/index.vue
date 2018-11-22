@@ -4,7 +4,7 @@
         <p>THIS IS THE STREAM PAGE</p>
         <div class="row">
             <div class="col-lg-10">
-                <audio-player-widget v-for="post in posts" :key="post.id" :song="post" />
+                <audio-player-widget v-for="post in posts" :key="post.id" :song="post" :user="user"/>
             </div>
             <div class="col-lg-2">
                 <h2>Who to follow</h2>
@@ -32,7 +32,7 @@ export default {
         app,
         env
     }) {
-        const { data } = await app.$axios.get(env.api.apiUrl + 'items/users?fields=*.*.*.*.*.*&single=1&filter[name]=' + env.user.name,
+        const { data } = await app.$axios.get(env.api.apiUrl + 'items/users?fields=*.*.*.*.*.*.*&single=1&filter[name]=' + env.user.name,
             JSON.stringify({
                 // filter: { published: true },
                 // sort: {_created:-1},
@@ -51,12 +51,17 @@ export default {
                 followerPosts.push(song)
               });
             });
-            console.log(followerPosts);
+            // console.log(followerPosts);
+            // console.log('USER USER USER:')
+            // console.log(data.data.name)
 
         return {
             posts: followerPosts,
             userlikes: data.data.likes,
-            user: env.user
+            user: {
+              name: data.data.name,
+              id: data.data.id
+            }
         }
     },
     methods: {
