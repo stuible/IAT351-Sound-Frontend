@@ -4,7 +4,7 @@
         <p>THIS IS THE STREAM PAGE</p>
         <div class="row">
             <div class="col-lg-10">
-                <audio-player-widget v-for="post in posts" :key="post.id" :song="post" :user="user" v-on:likedTrack="likedTrack($event)" />
+                <song-item v-for="post in posts" :key="post.id" :song="post" :user="user" v-on:likedTrack="likedTrack($event)" />
             </div>
             <div class="col-lg-2">
                 <h2>Who to follow</h2>
@@ -20,12 +20,12 @@
 </template>
 
 <script>
-import AudioPlayerWidget from '~/components/widgets/AudioPlayer.vue'
+import SongItem from '~/components/widgets/SongItem.vue'
 import Likes from '~/components/stream/Likes.vue'
 
 export default {
     components: {
-        AudioPlayerWidget,
+        SongItem,
         Likes
     },
     async asyncData({
