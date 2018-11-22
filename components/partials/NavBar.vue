@@ -1,9 +1,11 @@
 <template>
 <nav>
     <div class="container">
-        <nuxt-link class="logo" to="/">&nbsp;SOUND&nbsp;</nuxt-link>
-        <input type="text" name="search" class="search">
-        <div class="user">{{user.name}}</div>
+        <div class="items">
+            <nuxt-link class="logo" to="/">&nbsp;SOUND&nbsp;</nuxt-link>
+            <input type="text" name="search" class="search" placeholder="search...">
+            <div class="user">{{user.name}} ∨</div>
+        </div>
     </div>
 </nav>
 </template>
@@ -19,7 +21,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 $NavHeight: 75px;
+
+.container {
+    height: 100%;
+}
+
 nav {
     background: #fff;
     height: $NavHeight;
@@ -35,8 +43,18 @@ nav {
 
 }
 
+.items {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+
+}
+
 .search {
     margin: 0 auto;
+    border: 2px $orangeColour solid;
+    border-radius: 5px;
 }
 
 .logo {
@@ -60,5 +78,7 @@ nav {
 
 .user {
     float: right;
+    font-weight: 900;
+    text-transform: uppercase;
 }
 </style>

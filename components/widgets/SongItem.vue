@@ -185,7 +185,7 @@ export default {
             this.volume = 0;
         },
         seek(e) {
-            if (!this.playing || e.target.tagName === 'SPAN') {
+            if (e.target.tagName === 'SPAN') {
                 return;
             }
 
