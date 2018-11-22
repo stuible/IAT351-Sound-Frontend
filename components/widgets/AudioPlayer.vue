@@ -13,7 +13,7 @@
         <div class="progress-container">
             <div v-on:click="seek" class="player-progress" title="Time played : Total time">
                 <div :style="{ width: this.percentComplete + '%' }" class="player-seeker"></div>
-                <div :style="{ width: likePosition + '%' }" class="player-time-like" v-for="like in song.song.likes" :key="like.id">&nbsp;</div>
+                <div :style="{ width: likePosition(like.song_timestamp) + '%' }" class="player-time-like" v-for="like in song.song.likes" :key="like.id">&nbsp;</div>
             </div>
             <div class="player-time">
                 <div class="player-time-current">{{ currentTime }}</div>
@@ -102,15 +102,7 @@ export default {
         // 	// console.log(this.likes.song_timestamp)
         // 	return this.likes;
         // },
-        likePosition() {
-            if (this.likes.length >= 1) {
-                console.log(this.timeStringToFloat(this.likes[0].song_timestamp))
-                console.log(this.durationSeconds)
-                console.log((this.timeStringToFloat(this.likes[0].song_timestamp) / this.durationSeconds) * 100)
-            }
-            if (this.likes.length >= 1) return (this.timeStringToFloat(this.likes[0].song_timestamp) / this.durationSeconds) * 100
-            else return '0'
-        },
+        
         // getLikeTimestamp(){
         // 	if(this.likes.length >= 1)return this.likes[0].song_timestamp
         // 	else  return false
@@ -141,7 +133,8 @@ export default {
             if (this.audio.readyState >= 2) {
                 this.loaded = true;
                 this.durationSeconds = parseInt(this.audio.duration);
-                this.likes = this.song.song.likes;
+				this.likes = this.song.song.likes;
+				// console.log(this.song.song.likes[0].song_timestamp)
                 // this.likeTimestamp = this.likes[0].song_timestamp;
 
                 return this.playing = this.autoPlay;
@@ -175,11 +168,26 @@ export default {
             this.currentSeconds = parseInt(this.audio.currentTime);
         },
         timeStringToFloat(time) {
-            var hoursMinutes = time.split(/[.:]/);
-            var hours = parseInt(hoursMinutes[0], 10);
-            var minutes = hoursMinutes[1] ? parseInt(hoursMinutes[1], 10) : 0;
-            return minutes * 100
-        }
+			var hoursMinutes = time.split(/[.:]/);
+			// console.log('hoursminutes: ' + hoursMinutes)
+			var hours = parseInt(hoursMinutes[0], 10);
+			// console.log('hours: ' + hours)
+			var minutes = hoursMinutes[1] ? parseInt(hoursMinutes[1], 10) : 0;
+			// console.log('minutes: ' + minutes)
+			var seconds = hoursMinutes[1] ? parseInt(hoursMinutes[2], 10) : 0;
+			// console.log('seconds: ' + seconds)
+            return (minutes * 60) + seconds
+		},
+		likePosition(liketimestamp) {
+            if (this.likes.length >= 1) {
+				console.log('Timestamp: ' + this.likes[0].song_timestamp)
+                console.log('Timestamp to float: ' + this.timeStringToFloat(this.likes[0].song_timestamp))
+                console.log('duration in seconds: ' + this.durationSeconds)
+                console.log((this.timeStringToFloat(this.likes[0].song_timestamp) / this.durationSeconds) * 100)
+            }
+            if (this.likes.length >= 1) return (this.timeStringToFloat(liketimestamp) / this.durationSeconds) * 100
+            else return '0'
+        },
     },
     created() {
         this.innerLoop = this.loop;
@@ -274,7 +282,7 @@ $player-text-color: $player-link-color;
         padding-right: 5px;
         position: absolute;
         left: 0;
-        border-right: solid black 1px;
+        border-right: solid orange 2px;
     }
 }
 
