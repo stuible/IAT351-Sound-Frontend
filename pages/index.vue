@@ -20,6 +20,7 @@
 </template>
 
 <script>
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
 import SongItem from '~/components/widgets/SongItem.vue'
 import Likes from '~/components/stream/Likes.vue'
 

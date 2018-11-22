@@ -36,8 +36,8 @@ module.exports = {
   */
   env: {
     api: {
-      baseUrl: 'http://soundbackend.stuible.com/',
-      apiUrl: 'http://soundbackend.stuible.com/_/',
+      baseUrl: 'https://soundbackend.stuible.com/',
+      apiUrl: 'https://soundbackend.stuible.com/_/',
       token: 'access_token=gonefisching'
     },
     user: {
