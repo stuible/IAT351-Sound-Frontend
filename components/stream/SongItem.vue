@@ -12,7 +12,7 @@
             <a v-on:click.prevent="playing = !playing" title="Play/Pause" href="#">		<svg width="18px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">		<path v-if="!playing" fill="currentColor" d="M15,10.001c0,0.299-0.305,0.514-0.305,0.514l-8.561,5.303C5.51,16.227,5,15.924,5,15.149V4.852c0-0.777,0.51-1.078,1.135-0.67l8.561,5.305C14.695,9.487,15,9.702,15,10.001z"/>		<path v-else fill="currentColor" d="M15,3h-2c-0.553,0-1,0.048-1,0.6v12.8c0,0.552,0.447,0.6,1,0.6h2c0.553,0,1-0.048,1-0.6V3.6C16,3.048,15.553,3,15,3z M7,3H5C4.447,3,4,3.048,4,3.6v12.8C4,16.952,4.447,17,5,17h2c0.553,0,1-0.048,1-0.6V3.6C8,3.048,7.553,3,7,3z"/>		</svg>		</a>
         </div>
         <div class="progress-container">
-            <div v-on:click="seek" class="player-progress" title="Time played : Total time">
+            <div v-on:click="seek" ref="seekbar" class="player-progress" title="Time played : Total time">
                 <div :style="{ width: this.percentComplete + '%' }" class="player-seeker"></div>
                 <div :style="{ width: likePosition(like.song_timestamp) + '%' }" class="player-time-like" v-for="like in song.song.likes" :key="like.id">&nbsp;</div>
             </div>
@@ -103,12 +103,15 @@ export default {
             return count
         },
         currentTime() {
-            return convertTimeHHMMSS(this.currentSeconds);
+            if(this.playing) return convertTimeHHMMSS(this.$store.state.currentTime)
+            else return convertTimeHHMMSS(0)
+            
         },
         durationTime() {
             return convertTimeHHMMSS(this.durationSeconds);
         },
         percentComplete() {
+            console.log('percent complete: ' + this.currentSeconds + '/' + this.durationSeconds + '*' + 100)
             return parseInt(this.currentSeconds / this.durationSeconds * 100);
         },
         // playing() {
@@ -185,7 +188,10 @@ export default {
         playingSong(value){
             if(value.song.id == this.song.song.id) this.playing = true
             else this.playing = false
-        }
+        },
+        currentTime() {
+            this.currentSeconds = this.$store.state.currentTime;
+        },
     },
     methods: {
 
@@ -215,21 +221,23 @@ export default {
             this.volume = 0;
         },
         seek(e) {
-            if (e.target.tagName === 'SPAN') {
-                return;
-            }
+            // if (e.target.tagName === 'SPAN') {
+            //     return;
+            // }
+            console.log(this.$refs.seekbar.clientWidth)
+            const el = this.$refs.seekbar;
+            const seekPos = (e.clientX - el.offsetLeft) / el.clientWidth;
+            console.log('client x: ' + e.clientX)
+            console.log('el.clientLeft: ' + el.offsetLeft)
+            console.log('el.clientWidth: ' + el.clientWidth)
+            console.log(seekPos)
 
-            const el = e.target.getBoundingClientRect();
-            const seekPos = (e.clientX - el.left) / el.width;
-
-            this.audio.currentTime = parseInt(this.audio.duration * seekPos);
+            // this.audio.currentTime = parseInt(this.audio.duration * seekPos);
+            this.$store.commit('seek', seekPos)
         },
         stop() {
             this.playing = false;
             this.audio.currentTime = 0;
-        },
-        update(e) {
-            this.currentSeconds = parseInt(this.audio.currentTime);
         },
         like() {
             // console.log('liked:')

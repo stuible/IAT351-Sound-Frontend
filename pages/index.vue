@@ -73,9 +73,6 @@ export default {
     },
     methods: {
         likedTrack(event) {
-            // console.log(event);
-
-            
             this.updateLikes(event.id, event)
         },
         async updateLikes(songID, song){
@@ -97,7 +94,6 @@ export default {
               } 
             });
 
-            // return data.data.likes
         }
     }
 }

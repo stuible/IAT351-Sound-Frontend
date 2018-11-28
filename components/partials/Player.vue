@@ -53,6 +53,9 @@ export default {
         },
         currentTime(){
             return this.$store.state.currentTime
+        },
+        seekTime(){
+            return this.$store.state.seekTime
         }
 
     },
@@ -61,14 +64,14 @@ export default {
             // this.audio.load();
             // this.audio.pause();
             // this.audio = new Audio(this.song.song.file.data.full_url);
-            if (this.audio && !this.audio.paused) this.audio.pause()
+            // if (this.audio && !this.audio.paused) this.audio.pause()
             this.$store.state.playing = false;
             this.audio.src = this.song.song.file.data.full_url;
             this.audio.addEventListener('timeupdate', this.update);
             this.audio.play();
             // this.$store.state.playing = true;
             console.log('song changed')
-            // this.$store.state.playing = true;
+            this.$store.state.playing = true;
             // this.$refs.audiofile.addEventListener('loadeddata', console.log('song loaded'));
         },
         playing(newState, oldState) {
@@ -76,10 +79,10 @@ export default {
             console.log(`Playing: ${newState}`)
             if (newState) {
                 // this.audio.play();
-                if (this.audio) {
-                    this.audio.currentTime = 0
-                    if (!this.audio.paused) this.audio.pause()
-                }
+                // if (this.audio) {
+                //     this.audio.currentTime = 0
+                //     if (!this.audio.paused) this.audio.pause()
+                // }
 
                 // this.audio = new Audio(this.song.song.file.data.full_url);
                 // this.audio.
@@ -88,6 +91,12 @@ export default {
                 this.audio.pause();
             }
 
+        },
+        seekTime(newTime, oldTime){
+            if(newTime != undefined){
+                this.audio.currentTime = newTime
+                this.$store.state.seekTime = undefined
+            }
         }
     },
     methods: {
@@ -113,8 +122,9 @@ export default {
     position: fixed;
     bottom: 0;
     background-color: grey;
-    height: 25px;
+    // height: 25px;
     width: 100%;
+    padding: 2em;
 
      >div {
         display: inline-block;
