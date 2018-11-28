@@ -3,7 +3,7 @@
     <div class="name">{{song.song.title}}</div>
     <div class="controls">
         <div>PREV</div>
-        <div>PLAY</div>
+        <div @click="togglePlay()">PLAY</div>
         <div>NEXT</div>
     </div>
     <div>{{currentTime | HHMMSS}}</div>
@@ -103,6 +103,9 @@ export default {
         update(){
             this.$store.state.currentTime = this.audio.currentTime
             // console.log(this.audio.currentTime)
+        },
+        togglePlay(){
+            this.$store.state.playing = !this.$store.state.playing
         }
     },
     mounted() {
