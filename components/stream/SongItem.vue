@@ -79,7 +79,7 @@ export default {
         }
     },
     data: () => ({
-        audio: undefined,
+        // audio: undefined,
         currentSeconds: 0,
         durationSeconds: 0,
         innerLoop: false,
@@ -165,7 +165,7 @@ export default {
     },
     watch: {
         playing(value) {
-
+            // if(value.song.id == this.song.song.id){}
             if (value) {
                 console.log('play')
                 this.$store.state.song = this.song;
@@ -183,7 +183,7 @@ export default {
             this.audio.volume = this.volume / 100;
         },
         playingSong(value){
-            if(value == this.song) this.playing = true
+            if(value.song.id == this.song.song.id) this.playing = true
             else this.playing = false
         }
     },
