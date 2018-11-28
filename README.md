@@ -2,7 +2,7 @@
 
  A rethinking of the soundcloud UI using HCI methods for IAT351
  
-https://sovndkloud.netlify.com/ 
+https://sovnd.cloud/
 
 ## 𝄢 Project Deliverables:
 Report detailing your team design process detailing these three waves:
