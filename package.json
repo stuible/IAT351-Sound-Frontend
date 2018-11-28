@@ -17,8 +17,7 @@
     "cross-env": "^5.2.0",
     "flexboxgrid": "^6.3.1",
     "normalize.css": "^8.0.1",
-    "nuxt": "^2.0.0",
-    "nuxt-buefy": "^0.2.1",
+    "nuxt": "^2.3.4",
     "nuxt-sass-resources-loader": "^2.0.5"
   },
   "devDependencies": {
@@ -26,8 +25,8 @@
     "eslint": "^5.0.1",
     "eslint-loader": "^2.0.0",
     "eslint-plugin-vue": "^4.0.0",
-    "node-sass": "^4.10.0",
-    "nodemon": "^1.11.0",
+    "node-sass": "^4.11.0",
+    "nodemon": "^1.18.7",
     "sass-loader": "^7.1.0"
   }
 }
