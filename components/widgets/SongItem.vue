@@ -5,7 +5,8 @@
     <div class="player-controls">
         <!-- <div>
             <a v-on:click.prevent="stop" title="Stop" href="#">		<svg width="18px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-	 		<path fill="currentColor" d="M16,4.995v9.808C16,15.464,15.464,16,14.804,16H4.997C4.446,16,4,15.554,4,15.003V5.196C4,4.536,4.536,4,5.196,4h9.808C15.554,4,16,4.446,16,4.995z"/>		</svg>		</a>
+
+<path fill="currentColor" d="M16,4.995v9.808C16,15.464,15.464,16,14.804,16H4.997C4.446,16,4,15.554,4,15.003V5.196C4,4.536,4.536,4,5.196,4h9.808C15.554,4,16,4.446,16,4.995z"/>		</svg>		</a>
         </div> -->
         <div>
             <a v-on:click.prevent="playing = !playing" title="Play/Pause" href="#">		<svg width="18px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">		<path v-if="!playing" fill="currentColor" d="M15,10.001c0,0.299-0.305,0.514-0.305,0.514l-8.561,5.303C5.51,16.227,5,15.924,5,15.149V4.852c0-0.777,0.51-1.078,1.135-0.67l8.561,5.305C14.695,9.487,15,9.702,15,10.001z"/>		<path v-else fill="currentColor" d="M15,3h-2c-0.553,0-1,0.048-1,0.6v12.8c0,0.552,0.447,0.6,1,0.6h2c0.553,0,1-0.048,1-0.6V3.6C16,3.048,15.553,3,15,3z M7,3H5C4.447,3,4,3.048,4,3.6v12.8C4,16.952,4.447,17,5,17h2c0.553,0,1-0.048,1-0.6V3.6C8,3.048,7.553,3,7,3z"/>		</svg>		</a>
@@ -134,9 +135,9 @@ export default {
                 const values = Object.values(this.song.song.likes)
                 for (const value of values) {
                     console.log(value.user.name)
-                    if (value.user.name == this.user.name){
-						return value.id
-					}
+                    if (value.user.name == this.user.name) {
+                        return value.id
+                    }
                 }
             }
             return false;
@@ -237,7 +238,7 @@ export default {
                     liked: true
                 })
             } else {
-                const addLikeReq = await this.$axios.delete(process.env.api.apiUrl + 'items/likes/' + this.likedID +'?access_token=gonefisching', {
+                const addLikeReq = await this.$axios.delete(process.env.api.apiUrl + 'items/likes/' + this.likedID + '?access_token=gonefisching', {
 
                 }, {
                     headers: {
@@ -245,9 +246,9 @@ export default {
                         'Content-Type': 'application/json',
 
                     },
-				})
-				
-				this.$emit('likedTrack', {
+                })
+
+                this.$emit('likedTrack', {
                     id: this.song.song.id,
                     liked: false
                 })
@@ -280,6 +281,9 @@ export default {
         this.innerLoop = this.loop;
     },
     mounted() {
+        // console.log(this.song.song.length)
+        // console.log(convertTimeHHMMSS(this.song.length))
+        this.durationSeconds = this.timeStringToFloat(this.song.song.length)
         this.audio = this.$el.querySelectorAll('audio')[0];
         this.audio.addEventListener('timeupdate', this.update);
         this.audio.addEventListener('loadeddata', this.load);
