@@ -3,10 +3,10 @@
     <div class="container">
         <p>THIS IS THE STREAM PAGE</p>
         <div class="row">
-            <div class="col-lg-10">
+            <div class="col-sm-10">
                 <song-item v-for="post in posts" :key="post.id" :song="post" :user="user" v-on:likedTrack="likedTrack($event)" />
             </div>
-            <div class="col-lg-2">
+            <div class="col-sm-2">
                 <h2>Who to follow</h2>
                 <h2>Likes</h2>
                 <likes :likes="userlikes" />
