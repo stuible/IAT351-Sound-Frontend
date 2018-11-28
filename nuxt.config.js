@@ -69,6 +69,9 @@ module.exports = {
     // See https://github.com/nuxt-community/axios-module#options
     credentials: false
   },
+  plugins: [
+    '~plugins/filters.js',
+  ],
 
   /*
   ** Build configuration

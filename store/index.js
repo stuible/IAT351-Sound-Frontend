@@ -4,7 +4,8 @@ const playerStore = () => {
   return new Vuex.Store({
     state: () => ({
       song: undefined,
-      playing: false
+      playing: false,
+      currentTime: 0,
     }),
     mutations: {
       play (state) {

@@ -1,10 +1,12 @@
 <template>
 <div id="player">
+    <div class="name">{{song.song.title}}</div>
     <div class="controls">
-
+        <div>PREV</div>
+        <div>PLAY</div>
+        <div>NEXT</div>
     </div>
-    {{song.song.title}}
-    <div></div>
+    <div>{{currentTime | HHMMSS}}</div>
     <!-- <audio :loop="innerLoop" ref="audiofile" :src="song.song.file.data.full_url" preload="auto" style="display: none;"></audio> -->
 </div>
 </template>
@@ -48,16 +50,21 @@ export default {
         },
         playing() {
             return this.$store.state.playing
+        },
+        currentTime(){
+            return this.$store.state.currentTime
         }
+
     },
     watch: {
-        song(){
+        song() {
             // this.audio.load();
             // this.audio.pause();
             // this.audio = new Audio(this.song.song.file.data.full_url);
-            if(this.audio && !this.audio.paused) this.audio.pause()
+            if (this.audio && !this.audio.paused) this.audio.pause()
             this.$store.state.playing = false;
-            this.audio = new Audio(this.song.song.file.data.full_url);
+            this.audio.src = this.song.song.file.data.full_url;
+            this.audio.addEventListener('timeupdate', this.update);
             this.audio.play();
             // this.$store.state.playing = true;
             console.log('song changed')
@@ -69,12 +76,11 @@ export default {
             console.log(`Playing: ${newState}`)
             if (newState) {
                 // this.audio.play();
-                if(this.audio){
+                if (this.audio) {
                     this.audio.currentTime = 0
-                    if(!this.audio.paused) this.audio.pause()
-                }  
-                
-               
+                    if (!this.audio.paused) this.audio.pause()
+                }
+
                 // this.audio = new Audio(this.song.song.file.data.full_url);
                 // this.audio.
                 this.audio.play();
@@ -85,9 +91,14 @@ export default {
         }
     },
     methods: {
-        
+        update(){
+            this.$store.state.currentTime = this.audio.currentTime
+            // console.log(this.audio.currentTime)
+        }
     },
     mounted() {
+        this.audio = new Audio()
+        this.audio.volume = 0.1
         // this.audio = this.$el.querySelectorAll('audio')[0];
         // this.$store.watch(this.$store.getters.getPlayingStatus, n => {
         //     console.log('watched: ', n)
@@ -104,5 +115,21 @@ export default {
     background-color: grey;
     height: 25px;
     width: 100%;
+
+     >div {
+        display: inline-block;
+    }
+
+    .name {
+        display: inline-block;
+    }
+}
+
+.controls {
+    display: inline-block;
+
+    >div {
+        display: inline-block;
+    }
 }
 </style>
