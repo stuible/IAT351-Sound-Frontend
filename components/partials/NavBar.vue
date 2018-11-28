@@ -29,7 +29,7 @@ $NavHeight: 75px;
 }
 
 nav {
-    background: #fff;
+    background: #f1f1f1;
     height: $NavHeight;
     position: sticky;
     width: 100%;
@@ -53,8 +53,14 @@ nav {
 
 .search {
     margin: 0 auto;
+    padding: 0.75em;
     border: 2px $orangeColour solid;
     border-radius: 5px;
+    background: none;
+
+    &:focus {
+        outline: none;
+    }
 }
 
 .logo {
