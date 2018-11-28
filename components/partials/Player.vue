@@ -1,0 +1,108 @@
+<template>
+<div id="player">
+    <div class="controls">
+
+    </div>
+    {{song.song.title}}
+    <div></div>
+    <!-- <audio :loop="innerLoop" ref="audiofile" :src="song.song.file.data.full_url" preload="auto" style="display: none;"></audio> -->
+</div>
+</template>
+
+<script>
+import {
+    playerStore
+} from 'vuex'
+export default {
+    data: () => ({
+        audio: undefined,
+        currentSeconds: 0,
+        durationSeconds: 0,
+        innerLoop: false,
+        loaded: false,
+        // playing: false,
+        // previousVolume: 35,
+        // showVolume: false,
+        // volume: 30,
+        likeTimestamp: 0,
+        likes: {}
+    }),
+    computed: {
+        song() {
+            // console.log(this.$store.state.song)
+            if (this.$store.state.song != undefined) {
+                // this.audio = this.$el.querySelectorAll('audio')[0];
+                // this.$refs.audiofile.addEventListener('loadeddata', console.log('song loaded'));
+                return this.$store.state.song
+            } else return {
+                song: {
+                    title: 'No Song Loaded',
+                    file: {
+                        data: {
+                            full_url: ''
+                        }
+                    }
+                }
+            }
+
+        },
+        playing() {
+            return this.$store.state.playing
+        }
+    },
+    watch: {
+        song(){
+            // this.audio.load();
+            // this.audio.pause();
+            // this.audio = new Audio(this.song.song.file.data.full_url);
+            if(this.audio && !this.audio.paused) this.audio.pause()
+            this.$store.state.playing = false;
+            this.audio = new Audio(this.song.song.file.data.full_url);
+            this.audio.play();
+            // this.$store.state.playing = true;
+            console.log('song changed')
+            // this.$store.state.playing = true;
+            // this.$refs.audiofile.addEventListener('loadeddata', console.log('song loaded'));
+        },
+        playing(newState, oldState) {
+            // Our fancy notification (2).
+            console.log(`Playing: ${newState}`)
+            if (newState) {
+                // this.audio.play();
+                if(this.audio){
+                    this.audio.currentTime = 0
+                    if(!this.audio.paused) this.audio.pause()
+                }  
+                
+               
+                // this.audio = new Audio(this.song.song.file.data.full_url);
+                // this.audio.
+                this.audio.play();
+            } else {
+                this.audio.pause();
+            }
+
+        }
+    },
+    methods: {
+        
+    },
+    mounted() {
+        // this.audio = this.$el.querySelectorAll('audio')[0];
+        // this.$store.watch(this.$store.getters.getPlayingStatus, n => {
+        //     console.log('watched: ', n)
+        // })
+    }
+
+}
+</script>
+
+<style lang="scss" scoped>
+#player {
+    position: fixed;
+    bottom: 0;
+    background-color: grey;
+    height: 25px;
+    width: 100%;
+}
+</style>
