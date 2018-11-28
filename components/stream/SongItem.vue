@@ -296,11 +296,13 @@ export default {
             return (minutes * 60) + seconds
         },
         likePosition(liketimestamp) {
+            console.log('starting like position calc')
+            console.log('amount of likes: ' + this.likes.length)
             if (this.likes.length >= 1) {
-                // console.log('Timestamp: ' + this.likes[0].song_timestamp)
-                // console.log('Timestamp to float: ' + this.timeStringToFloat(this.likes[0].song_timestamp))
-                // console.log('duration in seconds: ' + this.durationSeconds)
-                // console.log((this.timeStringToFloat(this.likes[0].song_timestamp) / this.durationSeconds) * 100)
+                console.log('Timestamp: ' + this.likes[0].song_timestamp)
+                console.log('Timestamp to float: ' + this.timeStringToFloat(this.likes[0].song_timestamp))
+                console.log('duration in seconds: ' + this.durationSeconds)
+                console.log((this.timeStringToFloat(this.likes[0].song_timestamp) / this.durationSeconds) * 100)
             }
             if (this.likes.length >= 1) return (this.timeStringToFloat(liketimestamp) / this.durationSeconds) * 100
             else return '0'
@@ -311,6 +313,7 @@ export default {
     },
     mounted() {
         this.durationSeconds = this.timeStringToFloat(this.song.song.length)
+        this.likes = this.song.song.likes;
         // this.audio = this.$el.querySelectorAll('audio')[0];
         // this.audio.addEventListener('timeupdate', this.update);
         // this.audio.addEventListener('loadeddata', this.load);
