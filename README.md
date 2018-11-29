@@ -1,6 +1,6 @@
-# 𝄞 ~~&nbsp;SOUND&nbsp;~~ 𝄞
+# 𝄞 ~~&nbsp;SOVND&nbsp;~~ 𝄞
 
- A rethinking of the soundcloud UI using HCI methods for IAT351
+An embarrassingly aesthetic rethinking of the soundcloud user interface using HCI methods for IAT351
  
 https://sovnd.cloud/
 
