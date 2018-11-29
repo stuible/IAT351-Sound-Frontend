@@ -2,7 +2,7 @@
 <nav>
     <div class="container">
         <div class="items">
-            <nuxt-link class="logo" to="/">&nbsp;SOUND&nbsp;</nuxt-link>
+            <nuxt-link class="logo" to="/">&nbsp;SOVND&nbsp;</nuxt-link>
             <input type="text" name="search" class="search" placeholder="search...">
             <div class="user">{{user.name}} ∨</div>
         </div>
