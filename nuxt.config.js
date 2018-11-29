@@ -22,7 +22,7 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#ED9A01' },
+  loading: { color: '#FF3D00' },
 
   /*
   ** Global CSS
@@ -72,7 +72,6 @@ module.exports = {
   plugins: [
     '~plugins/filters.js',
   ],
-
   /*
   ** Build configuration
   */
