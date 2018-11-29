@@ -103,9 +103,9 @@ export default {
             return count
         },
         currentTime() {
-            if(this.playing) return convertTimeHHMMSS(this.$store.state.currentTime)
+            if (this.playing) return convertTimeHHMMSS(this.$store.state.currentTime)
             else return convertTimeHHMMSS(0)
-            
+
         },
         durationTime() {
             return convertTimeHHMMSS(this.durationSeconds);
@@ -123,7 +123,7 @@ export default {
         //     }
 
         // },
-        playingSong(){
+        playingSong() {
             return this.$store.state.song;
         },
         // likePosition() {
@@ -185,8 +185,8 @@ export default {
             this.showVolume = false;
             this.audio.volume = this.volume / 100;
         },
-        playingSong(value){
-            if(value.song.id == this.song.song.id) this.playing = true
+        playingSong(value) {
+            if (value.song.id == this.song.song.id) this.playing = true
             else this.playing = false
         },
         currentTime() {
@@ -221,19 +221,19 @@ export default {
             this.volume = 0;
         },
         seek(e) {
-            // if (e.target.tagName === 'SPAN') {
-            //     return;
-            // }
-            console.log(this.$refs.seekbar.clientWidth)
-            const el = this.$refs.seekbar;
-            const seekPos = (e.clientX - el.offsetLeft) / el.clientWidth;
-            console.log('client x: ' + e.clientX)
-            console.log('el.clientLeft: ' + el.offsetLeft)
-            console.log('el.clientWidth: ' + el.clientWidth)
-            console.log(seekPos)
+            if (this.playing) {
+                console.log(this.$refs.seekbar.clientWidth)
+                const el = this.$refs.seekbar;
+                const seekPos = (e.clientX - el.offsetLeft) / el.clientWidth;
+                console.log('client x: ' + e.clientX)
+                console.log('el.clientLeft: ' + el.offsetLeft)
+                console.log('el.clientWidth: ' + el.clientWidth)
+                console.log(seekPos)
 
-            // this.audio.currentTime = parseInt(this.audio.duration * seekPos);
-            this.$store.commit('seek', seekPos)
+                // this.audio.currentTime = parseInt(this.audio.duration * seekPos);
+                this.$store.commit('seek', seekPos)
+            }
+
         },
         stop() {
             this.playing = false;
