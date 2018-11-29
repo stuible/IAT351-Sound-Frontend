@@ -59,12 +59,18 @@ module.exports = {
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios',
+    '@nuxtjs/toast',
     'nuxt-sass-resources-loader'
     // ['nuxt-sass-resources-loader', '@/assets/scss/base.scss'],
   ],
   sassResources: [
     '@/assets/scss/base.scss'
   ],
+  toast: {
+    position: 'top-center',
+    duration: 3000,
+    className: ['toast',]
+  },
   /*
   ** Axios module configuration
   */
@@ -97,11 +103,11 @@ module.exports = {
   generate: {
     routes: function () {
       return axios.get('https://soundbackend.stuible.com/_/items/songs?fields=*.*.*')
-      .then((res) => {
-        return res.data.data.map((song) => {
-          return '/track/' + song.title
+        .then((res) => {
+          return res.data.data.map((song) => {
+            return '/track/' + song.title
+          })
         })
-      })
     }
   }
 }

@@ -3,7 +3,7 @@
     <div class="container">
         <div class="items">
             <nuxt-link class="logo" to="/">&nbsp;SOVND&nbsp;</nuxt-link>
-            <input type="text" name="search" class="search" placeholder="search...">
+            <input type="text" name="search" class="search" placeholder="search..." @click="notFunctionalToast()">
             <div class="user">{{user.name}} ∨</div>
         </div>
     </div>
@@ -15,6 +15,11 @@ export default {
     data() {
         return {
             user: process.env.user
+        }
+    },
+    methods: {
+        notFunctionalToast(){
+            this.$toast.error('Not functional for this demo ;)')
         }
     }
 }
