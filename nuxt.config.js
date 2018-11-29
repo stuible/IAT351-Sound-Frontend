@@ -1,4 +1,5 @@
 const pkg = require('./package')
+import axios from 'axios'
 
 module.exports = {
   mode: 'universal',
@@ -93,59 +94,12 @@ module.exports = {
   },
   generate: {
     routes: function () {
-      //   const {
-      //     data
-      // } = await app.$axios.get(env.api.apiUrl + 'items/users?fields=*.*.*.*.*.*.*&single=1&filter[name]=' + env.user.name,
-      //     JSON.stringify({
-      //         // filter: { published: true },
-      //         // sort: {_created:-1},
-      //         // populate: 1
-      //     }), {
-      //         headers: {
-      //             'Content-Type': 'application/json'
-      //         }
-      //     })
-
-      // let followerPosts = [];
-
-      // Object.entries(data.data.follows).forEach(([key, val]) => {
-      //   Object.entries(val.is_following.reposts).forEach(([key, repost]) => {
-      //     let song = {
-      //       user: val.is_following,
-      //       song: repost.song,
-      //       timestamp: repost.timestamp
-      //     }
-      //     followerPosts.push(song)
-      //   });
-      // });
-      return axios.get(env.api.apiUrl + 'items/users?fields=*.*.*.*.*.*.*&single=1&filter[name]=' + env.user.name,
-        JSON.stringify({
-          // filter: { published: true },
-          // sort: {_created:-1},
-          // populate: 1
-        }), {
-          headers: {
-            'Content-Type': 'application/json'
-          }
+      return axios.get('https://soundbackend.stuible.com/_/items/songs?fields=*.*.*')
+      .then((res) => {
+        return res.data.data.map((song) => {
+          return '/track/' + song.title
         })
-        .then((res) => {
-          let followerPosts = [];
-
-          Object.entries(res.data.follows).forEach(([key, val]) => {
-            Object.entries(val.is_following.reposts).forEach(([key, repost]) => {
-              let song = {
-                user: val.is_following,
-                song: repost.song,
-                timestamp: repost.timestamp
-              }
-              followerPosts.push(song)
-            });
-          });
-
-          return followerPosts.data.map((page) => {
-            let route = '/track/' + page.title
-          })
-        })
+      })
     }
   }
 }
