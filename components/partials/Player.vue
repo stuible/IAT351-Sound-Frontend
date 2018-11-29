@@ -1,13 +1,21 @@
 <template>
 <div id="player">
-    <div class="name">{{song.song.title}}</div>
-    <div class="controls">
-        <i class="material-icons">skip_previous</i>
-        <i class="material-icons play" @click="togglePlay()">{{playIcon}}</i>
-        <i class="material-icons">skip_next</i>
-    </div>
+    <div class="container">
+        <div class="controls">
+            <i class="material-icons">skip_previous</i>
+            <i class="material-icons play" @click="togglePlay()">{{playIcon}}</i>
+            <i class="material-icons">skip_next</i>
+        </div>
+        <div class="seekbar">
+            <div class="line"></div>
+        </div>
         <div>{{currentTime | HHMMSS}}</div>
+        <div class="info">
+            <div class="name">{{song.song.title}}</div>
+        </div>
+
     </div>
+</div>
 </template>
 
 <script>
@@ -49,8 +57,8 @@ export default {
         seekTime() {
             return this.$store.state.seekTime
         },
-        playIcon(){
-            if(this.playing) return 'pause'
+        playIcon() {
+            if (this.playing) return 'pause'
             else return 'play_arrow'
         }
 
@@ -105,6 +113,13 @@ export default {
     mounted() {
         this.audio = new Audio()
         this.audio.volume = 0.1
+        
+        window.addEventListener("keypress", function (e) {
+            if (e.keyCode == 32 && document.querySelector("input.search") !== document.activeElement) {
+                console.log('spacebar pushed')
+                this.togglePlay()
+            }
+        }.bind(this));
     }
 
 }
@@ -116,10 +131,20 @@ export default {
     bottom: 0;
     background: #f1f1f1;
     width: 100%;
-    padding: 2em;
+    padding: 0.15em;
 
-    >div {
-        display: inline-block;
+    .container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+        align-content: stretch;
+
+        >div {
+            display: inline-block;
+        }
+
     }
 
     .name {
@@ -132,7 +157,7 @@ export default {
 
     i {
         cursor: pointer;
-        font-size: 2em;
+        font-size: 3.25em;
     }
 
     // >div,
@@ -144,5 +169,10 @@ export default {
     //     width: 3em;
     // }
 
+}
+
+.seekbar {
+    border-bottom: 2px $orangeColour solid;
+    flex: 1;
 }
 </style>
