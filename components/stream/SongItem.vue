@@ -276,7 +276,7 @@ export default {
     },
     mounted() {
         this.durationSeconds = this.timeStringToFloat(this.song.song.length)
-        if (this.$store.state.song && this.$store.state.song.song.id == this.song.song.id) this.playing = true
+        if (this.$store.state.song && this.$store.state.song.song.id == this.song.song.id && this.$store.state.playing) this.playing = true
         // else this.playing = false
         if (this.playing) console.log(this.song.song.title + ' is playing')
 

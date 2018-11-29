@@ -54,6 +54,7 @@ export default {
     watch: {
         song(newState, oldState) {
             if (oldState.song.id != newState.song.id) {
+                console.log('song is different')
                 this.$store.state.playing = false;
                 this.audio.src = this.song.song.file.data.full_url;
                 this.audio.addEventListener('timeupdate', this.update);
@@ -63,6 +64,7 @@ export default {
                 console.log('song changed')
                 this.$store.state.playing = true;
             }
+            else console.log('song is the same')
 
             // this.$refs.audiofile.addEventListener('loadeddata', console.log('song loaded'));
         },
