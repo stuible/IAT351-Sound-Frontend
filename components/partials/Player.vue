@@ -7,7 +7,6 @@
         <div>NEXT</div>
     </div>
     <div>{{currentTime | HHMMSS}}</div>
-    <!-- <audio :loop="innerLoop" ref="audiofile" :src="song.song.file.data.full_url" preload="auto" style="display: none;"></audio> -->
 </div>
 </template>
 
@@ -22,19 +21,12 @@ export default {
         durationSeconds: 0,
         innerLoop: false,
         loaded: false,
-        // playing: false,
-        // previousVolume: 35,
-        // showVolume: false,
-        // volume: 30,
         likeTimestamp: 0,
         likes: {}
     }),
     computed: {
         song() {
-            // console.log(this.$store.state.song)
             if (this.$store.state.song != undefined) {
-                // this.audio = this.$el.querySelectorAll('audio')[0];
-                // this.$refs.audiofile.addEventListener('loadeddata', console.log('song loaded'));
                 return this.$store.state.song
             } else return {
                 song: {
@@ -61,12 +53,6 @@ export default {
     },
     watch: {
         song(newState, oldState) {
-            // console.log(newState)
-            // console.log(oldState)
-            // this.audio.load();
-            // this.audio.pause();
-            // this.audio = new Audio(this.song.song.file.data.full_url);
-            // if (this.audio && !this.audio.paused) this.audio.pause()
             if (oldState.song.id != newState.song.id) {
                 this.$store.state.playing = false;
                 this.audio.src = this.song.song.file.data.full_url;
@@ -83,14 +69,6 @@ export default {
             // Our fancy notification (2).
             console.log(`Playing: ${newState}`)
             if (newState) {
-                // this.audio.play();
-                // if (this.audio) {
-                //     this.audio.currentTime = 0
-                //     if (!this.audio.paused) this.audio.pause()
-                // }
-
-                // this.audio = new Audio(this.song.song.file.data.full_url);
-                // this.audio.
                 this.audio.play();
             } else {
                 this.audio.pause();
@@ -116,10 +94,6 @@ export default {
     mounted() {
         this.audio = new Audio()
         this.audio.volume = 0.1
-        // this.audio = this.$el.querySelectorAll('audio')[0];
-        // this.$store.watch(this.$store.getters.getPlayingStatus, n => {
-        //     console.log('watched: ', n)
-        // })
     }
 
 }
@@ -130,7 +104,6 @@ export default {
     position: fixed;
     bottom: 0;
     background-color: grey;
-    // height: 25px;
     width: 100%;
     padding: 2em;
 
