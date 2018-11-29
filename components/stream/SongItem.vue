@@ -104,14 +104,14 @@ export default {
         },
         currentTime() {
             if (this.playing) return convertTimeHHMMSS(this.$store.state.currentTime)
-            else return convertTimeHHMMSS(0)
+            else return convertTimeHHMMSS(this.currentSeconds)
 
         },
         durationTime() {
             return convertTimeHHMMSS(this.durationSeconds);
         },
         percentComplete() {
-            console.log('percent complete: ' + this.currentSeconds + '/' + this.durationSeconds + '*' + 100)
+            // console.log('percent complete: ' + this.currentSeconds + '/' + this.durationSeconds + '*' + 100)
             return parseInt(this.currentSeconds / this.durationSeconds * 100);
         },
         // playing() {
@@ -190,7 +190,12 @@ export default {
             else this.playing = false
         },
         currentTime() {
-            this.currentSeconds = this.$store.state.currentTime;
+            if (this.playing) {
+                this.currentSeconds = this.$store.state.currentTime;
+            } else {
+                // currentSeconds
+            }
+
         },
     },
     methods: {
@@ -255,7 +260,7 @@ export default {
 
             if (!this.liked) {
                 var date = new Date(null);
-                date.setSeconds(this.audio.currentTime); // specify value for SECONDS here
+                date.setSeconds(this.currentSeconds); // specify value for SECONDS here
                 var timeString = date.toISOString().substr(11, 8);
 
                 const addLikeReq = await this.$axios.post(process.env.api.apiUrl + 'items/likes?access_token=gonefisching', {
