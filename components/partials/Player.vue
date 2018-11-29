@@ -51,27 +51,32 @@ export default {
         playing() {
             return this.$store.state.playing
         },
-        currentTime(){
+        currentTime() {
             return this.$store.state.currentTime
         },
-        seekTime(){
+        seekTime() {
             return this.$store.state.seekTime
         }
 
     },
     watch: {
-        song() {
+        song(newState, oldState) {
+            // console.log(newState)
+            // console.log(oldState)
             // this.audio.load();
             // this.audio.pause();
             // this.audio = new Audio(this.song.song.file.data.full_url);
             // if (this.audio && !this.audio.paused) this.audio.pause()
-            this.$store.state.playing = false;
-            this.audio.src = this.song.song.file.data.full_url;
-            this.audio.addEventListener('timeupdate', this.update);
-            this.audio.play();
-            // this.$store.state.playing = true;
-            console.log('song changed')
-            this.$store.state.playing = true;
+            if (oldState.song.id != newState.song.id) {
+                this.$store.state.playing = false;
+                this.audio.src = this.song.song.file.data.full_url;
+                this.audio.addEventListener('timeupdate', this.update);
+                this.audio.play();
+                // this.$store.state.playing = true;
+                console.log('song changed')
+                this.$store.state.playing = true;
+            }
+
             // this.$refs.audiofile.addEventListener('loadeddata', console.log('song loaded'));
         },
         playing(newState, oldState) {
@@ -92,19 +97,19 @@ export default {
             }
 
         },
-        seekTime(newTime, oldTime){
-            if(newTime != undefined){
+        seekTime(newTime, oldTime) {
+            if (newTime != undefined) {
                 this.audio.currentTime = newTime
                 this.$store.state.seekTime = undefined
             }
         }
     },
     methods: {
-        update(){
+        update() {
             this.$store.state.currentTime = this.audio.currentTime
             // console.log(this.audio.currentTime)
         },
-        togglePlay(){
+        togglePlay() {
             this.$store.state.playing = !this.$store.state.playing
         }
     },
@@ -129,7 +134,7 @@ export default {
     width: 100%;
     padding: 2em;
 
-     >div {
+    >div {
         display: inline-block;
     }
 

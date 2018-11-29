@@ -91,7 +91,8 @@ export default {
         // env: process.env,
         // liked: false,
         likeTimestamp: 0,
-        likes: {}
+        likes: {},
+        mounted: false,
     }),
     computed: {
         likeCount() {
@@ -168,18 +169,22 @@ export default {
     },
     watch: {
         playing(value) {
-            // if(value.song.id == this.song.song.id){}
-            if (value) {
-                console.log('play')
-                this.$store.state.song = this.song;
+            if (this.mounted) {
+                if (value) {
+                    console.log('play')
+                    this.$store.state.song = this.song;
+                    this.$store.state.playing = value;
+                    // this.$store.commit('play')
+                    return;
+                }
+                console.log('pause')
                 this.$store.state.playing = value;
-                // this.$store.commit('play')
-                return "";
+                // this.$store.commit('pause')
             }
-            console.log('pause')
-            this.$store.state.playing = value;
-            // this.$store.commit('pause')
-            return ""
+            else {
+                console.log('not mounted, not playing or pausing')
+            }
+
         },
         volume(value) {
             this.showVolume = false;
@@ -309,13 +314,13 @@ export default {
             return (minutes * 60) + seconds
         },
         likePosition(liketimestamp) {
-            console.log('starting like position calc')
-            console.log('amount of likes: ' + this.likes.length)
+            // console.log('starting like position calc')
+            // console.log('amount of likes: ' + this.likes.length)
             if (this.likes.length >= 1) {
-                console.log('Timestamp: ' + this.likes[0].song_timestamp)
-                console.log('Timestamp to float: ' + this.timeStringToFloat(this.likes[0].song_timestamp))
-                console.log('duration in seconds: ' + this.durationSeconds)
-                console.log((this.timeStringToFloat(this.likes[0].song_timestamp) / this.durationSeconds) * 100)
+                // console.log('Timestamp: ' + this.likes[0].song_timestamp)
+                // console.log('Timestamp to float: ' + this.timeStringToFloat(this.likes[0].song_timestamp))
+                // console.log('duration in seconds: ' + this.durationSeconds)
+                // console.log((this.timeStringToFloat(this.likes[0].song_timestamp) / this.durationSeconds) * 100)
             }
             if (this.likes.length >= 1) return (this.timeStringToFloat(liketimestamp) / this.durationSeconds) * 100
             else return '0'
@@ -326,6 +331,10 @@ export default {
     },
     mounted() {
         this.durationSeconds = this.timeStringToFloat(this.song.song.length)
+        if (this.$store.state.song && this.$store.state.song.song.id == this.song.song.id) this.playing = true
+        // else this.playing = false
+        if (this.playing) console.log(this.song.song.title + ' is playing')
+
         this.likes = this.song.song.likes;
         // this.audio = this.$el.querySelectorAll('audio')[0];
         // this.audio.addEventListener('timeupdate', this.update);
@@ -338,6 +347,7 @@ export default {
         //     this.$store.state.song = this.song;
         //     console.log(this.$store.state.song)
         // });
+        this.mounted = true;
     }
 }
 </script>
