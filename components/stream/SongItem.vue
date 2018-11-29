@@ -388,6 +388,7 @@ $player-text-color: $player-link-color;
         svg {
             display: inline-block;
             margin-left: 15px;
+            width: 1em;
         }
     }
 }
