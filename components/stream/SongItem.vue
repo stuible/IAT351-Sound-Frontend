@@ -1,7 +1,12 @@
 <template>
 <div class="player">
-    <nuxt-link :to="'/track/' + song.song.title" class="title">{{ song.user.name }} [REPOSTED] {{ song.song.title }} [BY] {{ song.song.artist.name }}</nuxt-link>
-    <p>REPOST TIMESTAMP: {{song.timestamp}}</p>
+    <div class="info">
+        <div class="user">{{ song.user.name }} [REPOSTED]</div>
+        <div class="artist">{{ song.song.artist.name }}</div>
+        <nuxt-link :to="'/track/' + song.song.title" class="title">{{ song.song.title }}</nuxt-link>
+    </div>
+
+    <!-- <p>REPOST TIMESTAMP: {{song.timestamp}}</p> -->
     <div class="player-controls">
         <!-- <div>
             <a v-on:click.prevent="stop" title="Stop" href="#">		<svg width="18px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -39,8 +44,8 @@
 // import axios from 'axios'
 import {
     playerStore
-} from 'vuex'
-const convertTimeHHMMSS = (val) => {
+} from "vuex";
+const convertTimeHHMMSS = val => {
     let hhmmss = new Date(val * 1000).toISOString().substr(11, 8);
 
     return hhmmss.indexOf("00:") === 0 ? hhmmss.substr(3) : hhmmss;
@@ -66,7 +71,7 @@ export default {
     },
     methods: {
         likeClicked: function () {
-            console.log('clicked')
+            console.log("clicked");
         }
     },
     data: () => ({
@@ -83,7 +88,7 @@ export default {
         // liked: false,
         likeTimestamp: 0,
         likes: {},
-        mounted: false,
+        mounted: false
     }),
     computed: {
         likeCount() {
@@ -92,39 +97,37 @@ export default {
             for (var like in this.song.song.likes) {
                 count = count + 1;
             }
-            return count
+            return count;
         },
         currentTime() {
-            if (this.playing) return convertTimeHHMMSS(this.$store.state.currentTime)
-            else return convertTimeHHMMSS(this.currentSeconds)
-
+            if (this.playing) return convertTimeHHMMSS(this.$store.state.currentTime);
+            else return convertTimeHHMMSS(this.currentSeconds);
         },
         durationTime() {
             return convertTimeHHMMSS(this.durationSeconds);
         },
         percentComplete() {
             // console.log('percent complete: ' + this.currentSeconds + '/' + this.durationSeconds + '*' + 100)
-            return parseInt(this.currentSeconds / this.durationSeconds * 100);
+            return parseInt((this.currentSeconds / this.durationSeconds) * 100);
         },
         playingSong() {
             return this.$store.state.song;
         },
-
         liked() {
-            const values = Object.values(this.song.song.likes)
+            const values = Object.values(this.song.song.likes);
             for (const value of values) {
-                console.log(value.user.name)
-                if (value.user.name == this.user.name) return true
+                console.log(value.user.name);
+                if (value.user.name == this.user.name) return true;
             }
             return false;
         },
         likedID() {
             if (this.liked) {
-                const values = Object.values(this.song.song.likes)
+                const values = Object.values(this.song.song.likes);
                 for (const value of values) {
-                    console.log(value.user.name)
+                    console.log(value.user.name);
                     if (value.user.name == this.user.name) {
-                        return value.id
+                        return value.id;
                     }
                 }
             }
@@ -138,28 +141,26 @@ export default {
         playing(value) {
             if (this.mounted) {
                 if (value) {
-                    console.log('play')
+                    console.log("play");
                     this.$store.state.song = this.song;
                     this.$store.state.playing = value;
                     // this.$store.commit('play')
                     return;
                 }
-                console.log('pause')
+                console.log("pause");
                 this.$store.state.playing = value;
                 // this.$store.commit('pause')
+            } else {
+                console.log("not mounted, not playing or pausing");
             }
-            else {
-                console.log('not mounted, not playing or pausing')
-            }
-
         },
         volume(value) {
             this.showVolume = false;
             this.audio.volume = this.volume / 100;
         },
         playingSong(value) {
-            if (value.song.id == this.song.song.id) this.playing = true
-            else this.playing = false
+            if (value.song.id == this.song.song.id) this.playing = true;
+            else this.playing = false;
         },
         currentTime() {
             if (this.playing) {
@@ -167,18 +168,16 @@ export default {
             } else {
                 // currentSeconds
             }
-
-        },
+        }
     },
     methods: {
-
         download() {
             this.stop();
-            window.open(this.file, 'download');
+            window.open(this.file, "download");
         },
         mute() {
             if (this.muted) {
-                return this.volume = this.previousVolume;
+                return (this.volume = this.previousVolume);
             }
 
             this.previousVolume = this.volume;
@@ -186,66 +185,64 @@ export default {
         },
         seek(e) {
             if (this.playing) {
-                console.log(this.$refs.seekbar.clientWidth)
+                console.log(this.$refs.seekbar.clientWidth);
                 const el = this.$refs.seekbar;
                 const seekPos = (e.clientX - el.offsetLeft) / el.clientWidth;
-                console.log('client x: ' + e.clientX)
-                console.log('el.clientLeft: ' + el.offsetLeft)
-                console.log('el.clientWidth: ' + el.clientWidth)
-                console.log(seekPos)
-                this.$store.commit('seek', seekPos)
+                console.log("client x: " + e.clientX);
+                console.log("el.clientLeft: " + el.offsetLeft);
+                console.log("el.clientWidth: " + el.clientWidth);
+                console.log(seekPos);
+                this.$store.commit("seek", seekPos);
             }
-
         },
         stop() {
             this.playing = false;
             this.audio.currentTime = 0;
         },
         like() {
-
             this.updateLike();
-
         },
         async updateLike() {
-
             if (!this.liked) {
                 var date = new Date(null);
                 date.setSeconds(this.currentSeconds); // specify value for SECONDS here
                 var timeString = date.toISOString().substr(11, 8);
 
-                const addLikeReq = await this.$axios.post(process.env.api.apiUrl + 'items/likes?access_token=gonefisching', {
-                    'user': this.user.id,
-                    'song': this.song.song.id,
-                    'song_timestamp': timeString
-                }, {
-                    headers: {
-                        // 'Access-Control-Allow-Origin': '*',
-                        'Content-Type': 'application/json',
+                const addLikeReq = await this.$axios.post(
+                    process.env.api.apiUrl + "items/likes?access_token=gonefisching", {
+                        user: this.user.id,
+                        song: this.song.song.id,
+                        song_timestamp: timeString
+                    }, {
+                        headers: {
+                            // 'Access-Control-Allow-Origin': '*',
+                            "Content-Type": "application/json"
+                        }
+                    }
+                );
 
-                    },
-                })
-
-                this.$emit('likedTrack', {
+                this.$emit("likedTrack", {
                     id: this.song.song.id,
                     liked: true
-                })
+                });
             } else {
-                const addLikeReq = await this.$axios.delete(process.env.api.apiUrl + 'items/likes/' + this.likedID + '?access_token=gonefisching', {
+                const addLikeReq = await this.$axios.delete(
+                    process.env.api.apiUrl +
+                    "items/likes/" +
+                    this.likedID +
+                    "?access_token=gonefisching", {}, {
+                        headers: {
+                            // 'Access-Control-Allow-Origin': '*',
+                            "Content-Type": "application/json"
+                        }
+                    }
+                );
 
-                }, {
-                    headers: {
-                        // 'Access-Control-Allow-Origin': '*',
-                        'Content-Type': 'application/json',
-
-                    },
-                })
-
-                this.$emit('likedTrack', {
+                this.$emit("likedTrack", {
                     id: this.song.song.id,
                     liked: false
-                })
+                });
             }
-
         },
         timeStringToFloat(time) {
             var hoursMinutes = time.split(/[.:]/);
@@ -256,7 +253,7 @@ export default {
             // console.log('minutes: ' + minutes)
             var seconds = hoursMinutes[1] ? parseInt(hoursMinutes[2], 10) : 0;
             // console.log('seconds: ' + seconds)
-            return (minutes * 60) + seconds
+            return minutes * 60 + seconds;
         },
         likePosition(liketimestamp) {
             // console.log('starting like position calc')
@@ -267,18 +264,26 @@ export default {
                 // console.log('duration in seconds: ' + this.durationSeconds)
                 // console.log((this.timeStringToFloat(this.likes[0].song_timestamp) / this.durationSeconds) * 100)
             }
-            if (this.likes.length >= 1) return (this.timeStringToFloat(liketimestamp) / this.durationSeconds) * 100
-            else return '0'
-        },
+            if (this.likes.length >= 1)
+                return (
+                    (this.timeStringToFloat(liketimestamp) / this.durationSeconds) * 100
+                );
+            else return "0";
+        }
     },
     created() {
         this.innerLoop = this.loop;
     },
     mounted() {
-        this.durationSeconds = this.timeStringToFloat(this.song.song.length)
-        if (this.$store.state.song && this.$store.state.song.song.id == this.song.song.id && this.$store.state.playing) this.playing = true
+        this.durationSeconds = this.timeStringToFloat(this.song.song.length);
+        if (
+            this.$store.state.song &&
+            this.$store.state.song.song.id == this.song.song.id &&
+            this.$store.state.playing
+        )
+            this.playing = true;
         // else this.playing = false
-        if (this.playing) console.log(this.song.song.title + ' is playing')
+        if (this.playing) console.log(this.song.song.title + " is playing");
 
         this.likes = this.song.song.likes;
         // this.audio = this.$el.querySelectorAll('audio')[0];
@@ -294,7 +299,7 @@ export default {
         // });
         this.mounted = true;
     }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -307,7 +312,7 @@ $player-text-color: $player-link-color;
 
 .player {
     background-color: $player-bg;
-    border: 1px solid $player-border-color;
+    // border: 1px solid $player-border-color;
     border-radius: 5px;
     // box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15);
     color: $player-text-color;
@@ -316,10 +321,29 @@ $player-text-color: $player-link-color;
     padding-top: 0.5em;
     line-height: 1.5625;
 
+    .user {
+        font-size: 0.75em;
+        text-align: right;
+    }
+
+    .info {
+        // padding-left: 1em;
+    }
+
+    .artist {
+        margin-bottom: -0.75em;
+    }
+
     .title {
-        padding-left: 1em;
+        text-transform: uppercase;
         text-decoration: none;
         color: black;
+        font-weight: 900;
+        font-size: 2em;
+
+        &:hover {
+            text-decoration: underline;
+        }
     }
 }
 
@@ -331,7 +355,7 @@ $player-text-color: $player-link-color;
 .player-controls {
     display: flex;
     border-top: 1px solid $player-border-color;
-    margin-top: 1em;
+    margin-top: 0.25em;
 
     >div {
         border-right: 1px solid $player-border-color;
@@ -364,7 +388,6 @@ $player-text-color: $player-link-color;
         svg {
             display: inline-block;
             margin-left: 15px;
-
         }
     }
 }
@@ -372,7 +395,7 @@ $player-text-color: $player-link-color;
 .player-progress {
     background-color: $player-progress-color;
     cursor: pointer;
-    height: 50%;
+    height: 100%;
     width: 100%;
     // min-width: 200px;
     // display: flex;
@@ -389,6 +412,7 @@ $player-text-color: $player-link-color;
 
     .player-time-like {
         opacity: 0.5;
+        height: 100%;
         padding-right: 5px;
         position: absolute;
         left: 0;
@@ -409,6 +433,5 @@ $player-text-color: $player-link-color;
         opacity: 0.5;
         padding-right: 5px;
     }
-
 }
 </style>

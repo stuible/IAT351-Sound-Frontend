@@ -2,12 +2,12 @@
 <div id="player">
     <div class="name">{{song.song.title}}</div>
     <div class="controls">
-        <div>PREV</div>
-        <div @click="togglePlay()">PLAY</div>
-        <div>NEXT</div>
+        <i class="material-icons">skip_previous</i>
+        <i class="material-icons play" @click="togglePlay()">{{playIcon}}</i>
+        <i class="material-icons">skip_next</i>
     </div>
-    <div>{{currentTime | HHMMSS}}</div>
-</div>
+        <div>{{currentTime | HHMMSS}}</div>
+    </div>
 </template>
 
 <script>
@@ -48,6 +48,10 @@ export default {
         },
         seekTime() {
             return this.$store.state.seekTime
+        },
+        playIcon(){
+            if(this.playing) return 'pause'
+            else return 'play_arrow'
         }
 
     },
@@ -63,8 +67,7 @@ export default {
                 // this.$store.state.playing = true;
                 console.log('song changed')
                 this.$store.state.playing = true;
-            }
-            else console.log('song is the same')
+            } else console.log('song is the same')
 
             // this.$refs.audiofile.addEventListener('loadeddata', console.log('song loaded'));
         },
@@ -93,7 +96,7 @@ export default {
         togglePlay() {
             this.$store.state.playing = !this.$store.state.playing
         },
-        resetTime(){
+        resetTime() {
             this.$store.state.currentTime = 0;
             // this.$store.state.playing = false;
             this.$store.commit('pause')
@@ -111,7 +114,7 @@ export default {
 #player {
     position: fixed;
     bottom: 0;
-    background-color: grey;
+    background: #f1f1f1;
     width: 100%;
     padding: 2em;
 
@@ -127,8 +130,19 @@ export default {
 .controls {
     display: inline-block;
 
-    >div {
-        display: inline-block;
+    i {
+        cursor: pointer;
+        font-size: 2em;
     }
+
+    // >div,
+    // >img {
+    //     display: inline-block;
+    // }
+
+    // >img {
+    //     width: 3em;
+    // }
+
 }
 </style>
