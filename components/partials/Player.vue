@@ -57,6 +57,7 @@ export default {
                 this.$store.state.playing = false;
                 this.audio.src = this.song.song.file.data.full_url;
                 this.audio.addEventListener('timeupdate', this.update);
+                this.audio.addEventListener('ended', this.resetTime);
                 this.audio.play();
                 // this.$store.state.playing = true;
                 console.log('song changed')
@@ -89,6 +90,11 @@ export default {
         },
         togglePlay() {
             this.$store.state.playing = !this.$store.state.playing
+        },
+        resetTime(){
+            this.$store.state.currentTime = 0;
+            // this.$store.state.playing = false;
+            this.$store.commit('pause')
         }
     },
     mounted() {
