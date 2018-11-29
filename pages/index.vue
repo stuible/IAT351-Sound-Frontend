@@ -1,7 +1,8 @@
 <template>
-<section class="section">
+<section class="stream">
     <div class="container">
-        <p>THIS IS THE STREAM PAGE</p>
+        <!-- <p>THIS IS THE STREAM PAGE</p> -->
+        <filters />
         <div class="row">
             <div class="col-sm-10">
                 <song-item v-for="post in posts" :key="post.id" :song="post" :user="user" v-on:likedTrack="likedTrack($event)" />
@@ -23,11 +24,13 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
 import SongItem from '~/components/stream/SongItem.vue'
 import Likes from '~/components/stream/Likes.vue'
+import Filters from '~/components/stream/Filters.vue'
 
 export default {
     components: {
         SongItem,
-        Likes
+        Likes,
+        Filters
     },
     async asyncData({
         app,
@@ -58,9 +61,6 @@ export default {
                 followerPosts.push(song)
             });
         });
-        // console.log(followerPosts);
-        // console.log('USER USER USER:')
-        // console.log(data.data.name)
 
         return {
             posts: followerPosts,
@@ -100,5 +100,8 @@ export default {
 </script>
 
 <style lang="scss">
+section.stream{
+    margin-bottom: 100px;
+}
 
 </style>
