@@ -14,7 +14,8 @@
 <path fill="currentColor" d="M16,4.995v9.808C16,15.464,15.464,16,14.804,16H4.997C4.446,16,4,15.554,4,15.003V5.196C4,4.536,4.536,4,5.196,4h9.808C15.554,4,16,4.446,16,4.995z"/>		</svg>		</a>
         </div> -->
         <div>
-            <a v-on:click.prevent="playing = !playing" title="Play/Pause" href="#">		<svg width="18px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">		<path v-if="!playing" fill="currentColor" d="M15,10.001c0,0.299-0.305,0.514-0.305,0.514l-8.561,5.303C5.51,16.227,5,15.924,5,15.149V4.852c0-0.777,0.51-1.078,1.135-0.67l8.561,5.305C14.695,9.487,15,9.702,15,10.001z"/>		<path v-else fill="currentColor" d="M15,3h-2c-0.553,0-1,0.048-1,0.6v12.8c0,0.552,0.447,0.6,1,0.6h2c0.553,0,1-0.048,1-0.6V3.6C16,3.048,15.553,3,15,3z M7,3H5C4.447,3,4,3.048,4,3.6v12.8C4,16.952,4.447,17,5,17h2c0.553,0,1-0.048,1-0.6V3.6C8,3.048,7.553,3,7,3z"/>		</svg>		</a>
+            <img class="albumart" :src="albumart" alt="" v-on:click="playing = !playing">
+            <!-- <a >		<svg width="18px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">		<path v-if="!playing" fill="currentColor" d="M15,10.001c0,0.299-0.305,0.514-0.305,0.514l-8.561,5.303C5.51,16.227,5,15.924,5,15.149V4.852c0-0.777,0.51-1.078,1.135-0.67l8.561,5.305C14.695,9.487,15,9.702,15,10.001z"/>		<path v-else fill="currentColor" d="M15,3h-2c-0.553,0-1,0.048-1,0.6v12.8c0,0.552,0.447,0.6,1,0.6h2c0.553,0,1-0.048,1-0.6V3.6C16,3.048,15.553,3,15,3z M7,3H5C4.447,3,4,3.048,4,3.6v12.8C4,16.952,4.447,17,5,17h2c0.553,0,1-0.048,1-0.6V3.6C8,3.048,7.553,3,7,3z"/>		</svg>		</a> -->
         </div>
         <div class="progress-container">
             <div v-on:click="seek" ref="seekbar" class="player-progress" title="Time played : Total time">
@@ -135,6 +136,10 @@ export default {
         },
         muted() {
             return this.volume / 100 === 0;
+        },
+        albumart(){
+            if(this.song.song.albumart) return this.song.song.albumart.data.full_url
+            else return ""
         }
     },
     watch: {
@@ -317,17 +322,18 @@ $player-text-color: $player-link-color;
     // box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15);
     color: $player-text-color;
     // display: inline-block;
-    margin-bottom: 1em;
+    margin-bottom: 2em;
     padding-top: 0.5em;
     line-height: 1.5625;
 
     .user {
         font-size: 0.75em;
-        text-align: right;
+        // text-align: right;
+        width: 100%;
     }
 
     .info {
-        // padding-left: 1em;
+       display: inline-block;
     }
 
     .artist {
@@ -347,6 +353,12 @@ $player-text-color: $player-link-color;
     }
 }
 
+.albumart{
+    display: inline-block;
+    height: 4em;
+    cursor: pointer;
+}
+
 .progress-container {
     display: flex;
     flex: 1;
@@ -356,6 +368,7 @@ $player-text-color: $player-link-color;
     display: flex;
     border-top: 1px solid $player-border-color;
     margin-top: 0.25em;
+    height: 4em;
 
     >div {
         border-right: 1px solid $player-border-color;
@@ -378,6 +391,7 @@ $player-text-color: $player-link-color;
     }
 
     .likes {
+        height: 2em;
 
         // display: block;
         .likeCount {
