@@ -55,6 +55,7 @@ export default {
 .filters {
     font-size: 3em;
     text-transform: lowercase;
+    padding-bottom: 1em; 
 
     span {
         border: 2px dashed grey;
