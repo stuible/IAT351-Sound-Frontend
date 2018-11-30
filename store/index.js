@@ -8,6 +8,7 @@ const playerStore = () => {
       currentTime: 0,
       seekTime: undefined,
       loading: false,
+      seenTracks: [],
     }),
     mutations: {
       play (state) {
@@ -15,6 +16,11 @@ const playerStore = () => {
       },
       pause (state) {
         state.playing = false;
+      },
+      playSong (state, song){
+        state.playing = true;
+        state.song = song;
+        state.seenTracks.push(song)
       },
       seek(state, n) {
 
@@ -40,7 +46,7 @@ const playerStore = () => {
       }
     },
     getters: {
-        getPlayingStatus: state => () => state.playing
+        getPlayingStatus: state => () => state.playing,
       },
   })
 }
