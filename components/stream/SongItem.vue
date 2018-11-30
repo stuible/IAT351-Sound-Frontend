@@ -14,7 +14,8 @@
 <path fill="currentColor" d="M16,4.995v9.808C16,15.464,15.464,16,14.804,16H4.997C4.446,16,4,15.554,4,15.003V5.196C4,4.536,4.536,4,5.196,4h9.808C15.554,4,16,4.446,16,4.995z"/>		</svg>		</a>
         </div> -->
         <div>
-            <img class="albumart" :src="albumart" alt="" v-on:click="playing = !playing">
+            <div class="playpause" v-on:click="playing = !playing"><i class="material-icons play">{{playIcon}}</i></div>
+            <img class="albumart" :src="albumart" alt="">
             <!-- <a >		<svg width="18px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">		<path v-if="!playing" fill="currentColor" d="M15,10.001c0,0.299-0.305,0.514-0.305,0.514l-8.561,5.303C5.51,16.227,5,15.924,5,15.149V4.852c0-0.777,0.51-1.078,1.135-0.67l8.561,5.305C14.695,9.487,15,9.702,15,10.001z"/>		<path v-else fill="currentColor" d="M15,3h-2c-0.553,0-1,0.048-1,0.6v12.8c0,0.552,0.447,0.6,1,0.6h2c0.553,0,1-0.048,1-0.6V3.6C16,3.048,15.553,3,15,3z M7,3H5C4.447,3,4,3.048,4,3.6v12.8C4,16.952,4.447,17,5,17h2c0.553,0,1-0.048,1-0.6V3.6C8,3.048,7.553,3,7,3z"/>		</svg>		</a> -->
         </div>
         <div class="progress-container">
@@ -138,14 +139,18 @@ export default {
         muted() {
             return this.volume / 100 === 0;
         },
-        albumart(){
-            if(this.song.song.albumart) return this.song.song.albumart.data.full_url
+        albumart() {
+            if (this.song.song.albumart) return this.song.song.albumart.data.full_url
             else return ""
         },
-        loading(){
+        loading() {
             // console.log()
-            if(this.playingSong == this.song) return this.$store.state.loading
+            if (this.playingSong == this.song) return this.$store.state.loading
             else return false
+        },
+        playIcon() {
+            if (this.playing) return 'pause'
+            else return 'play_arrow'
         }
     },
     watch: {
@@ -322,15 +327,15 @@ $player-seeker-color: $player-link-color;
 $player-text-color: $player-link-color;
 
 @keyframes pulse {
-  0% {
-    // background-color: #001F3F;
-  }
-  75%{
-    background-color: $orangeColour;
-  }
-  100% {
-    
-  }
+    0% {
+        // background-color: #001F3F;
+    }
+
+    75% {
+        background-color: $orangeColour;
+    }
+
+    100% {}
 }
 
 .player {
@@ -351,7 +356,7 @@ $player-text-color: $player-link-color;
     }
 
     .info {
-       display: inline-block;
+        display: inline-block;
     }
 
     .artist {
@@ -371,7 +376,25 @@ $player-text-color: $player-link-color;
     }
 }
 
-.albumart{
+.playpause {
+    opacity: 0;
+    position: absolute;
+    width: 4em;
+    text-align: center;
+    margin-top: 0.125em;
+    cursor: pointer;
+
+    i {
+        font-size: 4em;
+        color: $orangeColour;
+    }
+
+    &:hover{
+        opacity: 1;
+    }
+}
+
+.albumart {
     display: inline-block;
     height: 4em;
     cursor: pointer;
