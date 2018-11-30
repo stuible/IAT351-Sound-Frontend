@@ -6,7 +6,8 @@ const playerStore = () => {
       song: undefined,
       playing: false,
       currentTime: 0,
-      seekTime: undefined
+      seekTime: undefined,
+      loading: false,
     }),
     mutations: {
       play (state) {
@@ -32,6 +33,10 @@ const playerStore = () => {
 
         
         state.seekTime = parseInt(seektime * n);
+      },
+      loading(state, bool){
+          console.log("setting loading state to: " + bool)
+          state.loading = bool;
       }
     },
     getters: {

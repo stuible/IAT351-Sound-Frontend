@@ -57,6 +57,9 @@ export default {
         seekTime() {
             return this.$store.state.seekTime
         },
+        loading(){
+            return this.$store.state.loading;
+        },
         playIcon() {
             if (this.playing) return 'pause'
             else return 'play_arrow'
@@ -66,11 +69,13 @@ export default {
     watch: {
         song(newState, oldState) {
             if (oldState.song.id != newState.song.id) {
-                console.log('song is different')
+                console.log('song is different: loading new song')
+                this.$store.commit('loading', true)
                 this.$store.state.playing = false;
                 this.audio.src = this.song.song.file.data.full_url;
                 this.audio.addEventListener('timeupdate', this.update);
                 this.audio.addEventListener('ended', this.resetTime);
+                this.audio.addEventListener('canplaythrough', this.nowLoaded);
                 this.audio.play();
                 // this.$store.state.playing = true;
                 console.log('song changed')
@@ -108,6 +113,10 @@ export default {
             this.$store.state.currentTime = 0;
             // this.$store.state.playing = false;
             this.$store.commit('pause')
+        },
+        nowLoaded() {
+            console.log('has loaded song')
+            this.$store.commit('loading', false)
         }
     },
     mounted() {
