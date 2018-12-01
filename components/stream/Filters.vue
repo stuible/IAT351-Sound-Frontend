@@ -25,7 +25,7 @@ export default {
         },
         allOrUnseenText(){
             if(this.allOrUnseen) return 'All'
-            else return 'Unseen'
+            else return 'Unplayed'
         },
         postsOrRepostsText(){
             if(this.postsOrReposts) return 'Posts'
