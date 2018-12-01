@@ -12,8 +12,8 @@
                         </div>
                         <div class="info">
                             <div class="name">{{song.artist.name}}</div>
-                            <div class="followers">{{Math.floor((Math.random() * 500) + 50)}}</div>
-                            <div class="sounds">{{Math.floor((Math.random() * 40) + 2)}}</div>
+                            <div class="followers"><i class="material-icons">person</i>{{Math.floor((Math.random() * 500) + 50)}}</div>
+                            <div class="sounds"><i class="material-icons">music_note</i>{{Math.floor((Math.random() * 40) + 2)}}</div>
                         </div>
                     </div>
                     <div class="title">{{song.title}}</div>
@@ -76,18 +76,23 @@ section.player {
     }
 
     .artist {
-        .profilepic{
+        .profilepic {
             display: inline-block;
             width: 3em;
             height: 3em;
-            background-color: darkgray;
+            background-color: rgb(235, 235, 235);
             border-radius: 50%;
         }
+
         .info {
             display: inline-block;
 
-            .followers{
+            .followers {
                 display: inline-block;
+            }
+
+            i {
+                font-size: 0.8em;
             }
         }
     }

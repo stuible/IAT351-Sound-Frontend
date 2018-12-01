@@ -2,9 +2,9 @@
 <div id="player">
     <div class="container">
         <div class="controls">
-            <i class="material-icons">skip_previous</i>
+            <i class="material-icons" @click="$toast.error('Song change functionality not implemented for this demo')">skip_previous</i>
             <i class="material-icons play" @click="togglePlay()">{{playIcon}}</i>
-            <i class="material-icons">skip_next</i>
+            <i class="material-icons" @click="$toast.error('Song change functionality not implemented for this demo')">skip_next</i>
         </div>
         <div class="seekbar">
             <div class="line"></div>
@@ -183,5 +183,10 @@ export default {
 .seekbar {
     border-bottom: 2px $orangeColour solid;
     flex: 1;
+    margin: 0 2em;
+}
+
+.info {
+    margin-left: 2em;
 }
 </style>

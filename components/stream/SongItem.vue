@@ -1,7 +1,7 @@
 <template>
 <div class="player">
     <div class="info">
-        <div class="user">{{ song.user.name }} [{{postTypeText}}]</div>
+        <div class="user">{{ song.user.name }} <i class="material-icons">{{postTypeIcon}}</i> {{postTypeText}}</div>
         <div class="artist">{{ song.song.artist.name }}</div>
         <nuxt-link :to="'/track/' + song.song.title" class="title">{{ song.song.title }}</nuxt-link>
     </div>
@@ -172,7 +172,12 @@ export default {
         postTypeText() {
             if (this.postsOrReposts) return 'Posted'
             else return 'Reposted'
+        },
+        postTypeIcon() {
+            if (this.postsOrReposts) return 'music_note'
+            else return 'refresh'
         }
+        
     },
     watch: {
         playing(value) {
@@ -375,6 +380,10 @@ $player-text-color: $player-link-color;
         font-size: 0.75em;
         // text-align: right;
         width: 100%;
+
+        i {
+            font-size: 1.5em;
+        }
     }
 
     .info {
