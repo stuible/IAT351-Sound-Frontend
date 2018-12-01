@@ -18,7 +18,8 @@
                     </div>
                     <div class="title">{{song.title}}</div>
                     <player :song="song" :user="{name: 'brian',id: '0' }" v-on:likedTrack="likedTrack($event)" />
-
+                    <top-comments :comments="commentData" />
+                    <comments :comments="commentData" />
                 </div>
 
             </div>
@@ -29,10 +30,13 @@
 <script>
 import axios from 'axios'
 import Player from '~/components/track/Player.vue'
-
+import Comments from '~/components/track/Comments.vue'
+import TopComments from '~/components/track/TopComments.vue'
 export default {
     components: {
         Player,
+        Comments,
+        TopComments
     },
     props: {
         songName: String,
@@ -53,11 +57,26 @@ export default {
                     'Content-Type': 'application/json'
                 }
             })
-        console.log(data)
+        // console.log(data)
+
+        const comments = await axios.get(env.api.apiUrl + 'items/comments?fields=*.*.*',
+            JSON.stringify({
+                // filter: { published: true },
+                // sort: {_created:-1},
+                // populate: 1
+            }), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            console.log('about to print comments')
+        console.log(comments.data.data)
 
         return {
             song: data.data,
+            commentData: comments.data.data
         }
+
     }
 }
 </script>
