@@ -6,11 +6,13 @@
         <nuxt-link :to="'/track/' + song.song.title" class="title">{{ song.song.title }}</nuxt-link>
     </div>
     <div class="actions">
-        <div class="button" v-on:click="like" v-bind:class="{ active: this.liked }"><i class="material-icons">favorite_border</i></div>
-        <div class="button"><i class="material-icons">refresh</i></div>
-        <div class="button"><i class="material-icons">share</i></div>
-        <div class="button"><i class="material-icons">queue_music</i></div>
-        <div class="button"><i class="material-icons">playlist_add</i></div>
+        <div class="button" v-on:click="like" v-bind:class="{ active: this.liked }"><i class="material-icons">favorite_border</i>
+            <div class="likeCount">{{likeCount}}</div>
+        </div>
+        <div class="button" @click="$toast.error('Reposting not functional in this demo')"><i class="material-icons">refresh</i></div>
+        <div class="button" @click="$toast.error('Sharing not functional in this demo')"><i class="material-icons">share</i></div>
+        <div class="button" @click="$toast.error('Queue not functional in this demo')"><i class="material-icons">queue_music</i></div>
+        <div class="button" @click="$toast.error('Playlists not functional in this demo')"><i class="material-icons">playlist_add</i></div>
     </div>
 
     <!-- <p>REPOST TIMESTAMP: {{song.timestamp}}</p> -->
@@ -167,8 +169,8 @@ export default {
             if (this.playing) return 'pause'
             else return 'play_arrow'
         },
-        postTypeText(){
-            if(this.postsOrReposts) return 'Posted'
+        postTypeText() {
+            if (this.postsOrReposts) return 'Posted'
             else return 'Reposted'
         }
     },
@@ -180,7 +182,7 @@ export default {
                     // this.$store.state.song = this.song;
                     // this.$store.state.playing = value;
                     this.$store.commit('playSong', this.song)
-                    if(this.skim) this.$store.commit('skim', this.song.song.hotspot)
+                    if (this.skim) this.$store.commit('skim', this.song.song.hotspot)
                     return;
                 }
                 console.log("pause");
@@ -387,7 +389,8 @@ $player-text-color: $player-link-color;
         .button {
             display: inline-block;
             text-align: center;
-            width: 2em;
+            // width: 2em;
+            padding: 0 0.25em;
             height: 2em;
             border: 1px solid black;
             color: black;
@@ -395,6 +398,13 @@ $player-text-color: $player-link-color;
 
             i {
                 margin-top: 3px;
+                display: inline-block;
+            }
+
+            .likeCount {
+                display: inline-block;
+                // height: 100%;
+                margin-top: -15px;
             }
 
             &.active {
@@ -433,7 +443,7 @@ $player-text-color: $player-link-color;
         color: $orangeColour;
     }
 
-    &:hover{
+    &:hover {
         opacity: 1;
     }
 }
@@ -478,11 +488,11 @@ $player-text-color: $player-link-color;
     .likes {
         height: 2em;
 
-        // display: block;
-        .likeCount {
-            display: inline-block;
-            padding-top: 5px;
-        }
+        // // display: block;
+        // .likeCount {
+        //     display: inline-block;
+        //     padding-top: 5px;
+        // }
 
         svg {
             display: inline-block;
