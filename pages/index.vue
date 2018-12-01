@@ -2,10 +2,10 @@
 <section class="stream">
     <div class="container">
         <!-- <p>THIS IS THE STREAM PAGE</p> -->
-        <filters />
+        <filters v-on:filterClicked="filterClicked"/>
         <div class="row">
             <div class="col-sm-10">
-                <song-item v-for="post in seenOrUnseen" :key="post.id" :song="post" :user="user" v-on:likedTrack="likedTrack($event)" />
+                <song-item v-for="post in seenOrUnseen" :key="post.id" :song="post" :user="user" v-on:likedTrack="likedTrack($event)" :skim="!playOrSkim"/>
             </div>
             <div class="col-sm-2">
                 <h2>Who to follow</h2>
@@ -62,30 +62,50 @@ export default {
                 followerReposts.push(song)
             });
 
-            // Object.entries(val.is_following.reposts).forEach(([key, repost]) => {
-            //     let song = {
-            //         user: val.is_following,
-            //         song: repost.song,
-            //         timestamp: repost.timestamp
-            //     }
-            //     followerPosts.push(song)
-            // });
+            Object.entries(val.is_following.posts).forEach(([key, repost]) => {
+                let song = {
+                    user: val.is_following,
+                    song: repost.song,
+                    timestamp: repost.timestamp
+                }
+                followerPosts.push(song)
+            });
         });
 
         return {
             reposts: followerReposts,
+            posts: followerPosts,
             userlikes: data.data.likes,
             user: {
                 name: data.data.name,
                 id: data.data.id
             },
-            feedType: 'reposts',
-            unseenOnly: false
+            // feedType: 'reposts',
+            allOrUnseen: true,
+            playOrSkim: true,
+            postsOrReposts: false,
+
         }
     },
     methods: {
         likedTrack(event) {
             this.updateLikes(event.id, event)
+        },
+        filterClicked(value){
+            console.log(value)
+            switch (value.name) {
+                case 'playSkim':
+                    this.playOrSkim = value.value
+                    break;
+                case 'allUnseen':
+                    this.allOrUnseen = value.value
+                    break;
+                case 'postsReposts':
+                    this.postsOrReposts = value.value
+                    break;
+                default:
+                    break;
+            }
         },
         async updateLikes(songID, song) {
 
@@ -116,8 +136,8 @@ export default {
     },
     computed: {
         feed() {
-            if (this.feedType == 'reposts') return this.reposts
-            else if (this.feedType == 'posts') return this.posts
+            if (this.postsOrReposts == false) return this.reposts
+            else if (this.postsOrReposts == true) return this.posts
         },
         alreadyPlayedTracks() {
             return this.$store.state.seenTracks;
@@ -131,7 +151,7 @@ export default {
             })
         },
         seenOrUnseen(){
-            if(this.unseenOnly == false) return this.feed
+            if(this.allOrUnseen == true) return this.feed
             else return this.unplayedPosts
         }
 

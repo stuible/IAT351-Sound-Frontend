@@ -36,14 +36,27 @@ export default {
         togglePlaySkim(){
             console.log('clicked')
             this.playOrSkim = !this.playOrSkim
+            this.$emit('filterClicked', {
+                name: 'playSkim',
+                value: this.playOrSkim
+
+            })
         },
         toggleAllUnseen(){
             console.log('clicked')
             this.allOrUnseen = !this.allOrUnseen
+            this.$emit('filterClicked', {
+                name: 'allUnseen',
+                value: this.allOrUnseen
+            })
         },
         togglePostsReposts(){
             console.log('clicked')
             this.postsOrReposts = !this.postsOrReposts
+            this.$emit('filterClicked', {
+                name: 'postsReposts',
+                value: this.postsOrReposts
+            })
         }
     }
     

@@ -69,6 +69,10 @@ export default {
         loop: {
             type: Boolean,
             default: false
+        },
+        skim: {
+            type: Boolean,
+            required: true
         }
     },
     methods: {
@@ -161,6 +165,7 @@ export default {
                     // this.$store.state.song = this.song;
                     // this.$store.state.playing = value;
                     this.$store.commit('playSong', this.song)
+                    if(this.skim) this.$store.commit('skim', this.song.song.hotspot)
                     return;
                 }
                 console.log("pause");

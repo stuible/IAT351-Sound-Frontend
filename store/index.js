@@ -22,6 +22,19 @@ const playerStore = () => {
         state.song = song;
         state.seenTracks.push(song)
       },
+      skim(state, n){
+        var hoursMinutes = n.split(/[.:]/);
+        // console.log('hoursminutes: ' + hoursMinutes)
+        var hours = parseInt(hoursMinutes[0], 10);
+        // console.log('hours: ' + hours)
+        var minutes = hoursMinutes[1] ? parseInt(hoursMinutes[1], 10) : 0;
+        // console.log('minutes: ' + minutes)
+        var seconds = hoursMinutes[1] ? parseInt(hoursMinutes[2], 10) : 0;
+        // console.log('seconds: ' + seconds)
+        var seektime =  (minutes * 60) + seconds
+
+        state.seekTime = seektime
+      },
       seek(state, n) {
 
         console.log(state.song.song.length)
