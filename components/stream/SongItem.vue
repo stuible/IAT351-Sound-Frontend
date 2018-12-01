@@ -6,7 +6,7 @@
         <nuxt-link :to="'/track/' + song.song.title" class="title">{{ song.song.title }}</nuxt-link>
     </div>
     <div class="actions">
-        <div class="button" v-on:click.prevent="like" v-bind:class="{ active: this.liked }"><i class="material-icons">favorite_border</i></div>
+        <div class="button" v-on:click="like" v-bind:class="{ active: this.liked }"><i class="material-icons">favorite_border</i></div>
         <div class="button"><i class="material-icons">refresh</i></div>
         <div class="button"><i class="material-icons">share</i></div>
         <div class="button"><i class="material-icons">queue_music</i></div>
@@ -256,7 +256,7 @@ export default {
                         }
                     }
                 );
-
+                // console.log('updated like!!')
                 this.$emit("likedTrack", {
                     id: this.song.song.id,
                     liked: true

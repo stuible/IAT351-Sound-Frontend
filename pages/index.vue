@@ -89,6 +89,8 @@ export default {
     },
     methods: {
         likedTrack(event) {
+            console.log('giong to update likes ' + event.id)
+            console.log(event)
             this.updateLikes(event.id, event)
         },
         filterClicked(value){
@@ -121,9 +123,14 @@ export default {
                         'Content-Type': 'application/json'
                     }
                 })
-            Object.entries(this.posts).forEach(([key, val]) => {
+            console.log(data)
+            Object.entries(this.feed).forEach(([key, val]) => {
+                console.log(val.song.id)
+                console.log(song.id)
                 if (val.song.id == song.id) {
+                    console.log('found like to update:')
                     console.log(val.song.likes)
+                    console.log(data.data.likes)
                     val.song.likes = data.data.likes
                 }
             });
