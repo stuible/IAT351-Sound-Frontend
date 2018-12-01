@@ -1,8 +1,16 @@
 <template>
-<section class="section">
+<section class="section player">
     <div class="container">
-        THIS IS A SONG: {{song.title}}
-    </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <img class="albumart" :src="this.song.albumart.data.full_url" alt="">
+            </div>
+                <div class="col-sm-8">
+                    <div class="title">{{song.title}}</div>
+                </div>
+
+            </div>
+        </div>
 </section>
 </template>
 
@@ -37,3 +45,18 @@ export default {
     }
 }
 </script>
+
+<style lang="scss">
+section.player {
+
+    .albumart {
+        width: 100%;
+    }
+
+    .title {
+        font-size: 4em;
+        text-transform: uppercase;
+        font-weight: 900;
+    }
+}
+</style>
