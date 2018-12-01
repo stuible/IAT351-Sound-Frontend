@@ -5,7 +5,7 @@
         <filters v-on:filterClicked="filterClicked"/>
         <div class="row">
             <div class="col-sm-10">
-                <song-item v-for="post in seenOrUnseen" :key="post.id" :song="post" :user="user" v-on:likedTrack="likedTrack($event)" :skim="!playOrSkim"/>
+                <song-item v-for="post in seenOrUnseen" :key="post.id" :song="post" :user="user" :postsOrReposts="postsOrReposts" v-on:likedTrack="likedTrack($event)" :skim="!playOrSkim"/>
             </div>
             <div class="col-sm-2">
                 <h2>Who to follow</h2>

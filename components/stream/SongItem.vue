@@ -1,7 +1,7 @@
 <template>
 <div class="player">
     <div class="info">
-        <div class="user">{{ song.user.name }} [REPOSTED]</div>
+        <div class="user">{{ song.user.name }} [{{postTypeText}}]</div>
         <div class="artist">{{ song.song.artist.name }}</div>
         <nuxt-link :to="'/track/' + song.song.title" class="title">{{ song.song.title }}</nuxt-link>
     </div>
@@ -71,6 +71,10 @@ export default {
             default: false
         },
         skim: {
+            type: Boolean,
+            required: true
+        },
+        postsOrReposts: {
             type: Boolean,
             required: true
         }
@@ -155,6 +159,10 @@ export default {
         playIcon() {
             if (this.playing) return 'pause'
             else return 'play_arrow'
+        },
+        postTypeText(){
+            if(this.postsOrReposts) return 'Posted'
+            else return 'Reposted'
         }
     },
     watch: {
