@@ -6,8 +6,19 @@
                 <img class="albumart" :src="this.song.albumart.data.full_url" alt="">
             </div>
                 <div class="col-sm-8">
-                    <div class="artist"></div>
+                    <div class="artist">
+                        <div class="profilepic">
+
+                        </div>
+                        <div class="info">
+                            <div class="name">{{song.artist.name}}</div>
+                            <div class="followers">{{Math.floor((Math.random() * 500) + 50)}}</div>
+                            <div class="sounds">{{Math.floor((Math.random() * 40) + 2)}}</div>
+                        </div>
+                    </div>
                     <div class="title">{{song.title}}</div>
+                    <player :song="song" :user="{name: 'brian',id: '0' }" v-on:likedTrack="likedTrack($event)" />
+
                 </div>
 
             </div>
@@ -17,8 +28,12 @@
 
 <script>
 import axios from 'axios'
+import Player from '~/components/track/Player.vue'
 
 export default {
+    components: {
+        Player,
+    },
     props: {
         songName: String,
     },
@@ -58,6 +73,23 @@ section.player {
         font-size: 4em;
         text-transform: uppercase;
         font-weight: 900;
+    }
+
+    .artist {
+        .profilepic{
+            display: inline-block;
+            width: 3em;
+            height: 3em;
+            background-color: darkgray;
+            border-radius: 50%;
+        }
+        .info {
+            display: inline-block;
+
+            div{
+                display: inline-block;
+            }
+        }
     }
 }
 </style>
