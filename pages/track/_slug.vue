@@ -86,7 +86,7 @@ section.player {
         .info {
             display: inline-block;
 
-            div{
+            .followers{
                 display: inline-block;
             }
         }
