@@ -6,6 +6,7 @@
                 <img class="albumart" :src="this.song.albumart.data.full_url" alt="">
             </div>
                 <div class="col-sm-8">
+                    <div class="artist"></div>
                     <div class="title">{{song.title}}</div>
                 </div>
 
