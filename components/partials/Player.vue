@@ -121,7 +121,7 @@ export default {
     },
     mounted() {
         this.audio = new Audio()
-        this.audio.volume = 0.1
+        this.audio.volume = 0.3
         
         window.addEventListener("keypress", function (e) {
             if (e.keyCode == 32 && document.querySelector("input.search") !== document.activeElement) {
