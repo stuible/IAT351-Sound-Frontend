@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-sm-10">
                 <song-item v-for="post in seenOrUnseen" :key="post.id" :song="post" :user="user" :postsOrReposts="postsOrReposts" v-on:likedTrack="likedTrack($event)" :skim="!playOrSkim"/>
-                <div class="allCaughtUp"></div>
+                <div class="allCaughtUp"><span class="line">&nbsp; &nbsp; &nbsp; &nbsp; </span>ALL CAUGHT UP<span class="line">&nbsp; &nbsp; &nbsp; &nbsp; </span></div>
             </div>
             <div class="col-sm-2">
                 <h2>Who to follow</h2>
@@ -175,5 +175,17 @@ export default {
 <style lang="scss">
 section.stream {
     margin-bottom: 100px;
+}
+
+.allCaughtUp {
+    margin-top: 3em;
+    text-align: center;
+    font-weight: 900;
+    color: $orangeColour;
+    font-size: 1.75em;
+    .line {
+        text-decoration: line-through;
+        padding: 0 0.5em;
+    }
 }
 </style>
