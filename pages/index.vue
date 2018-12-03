@@ -2,22 +2,26 @@
 <section class="stream">
     <div class="container">
         <!-- <p>THIS IS THE STREAM PAGE</p> -->
-        <filters v-on:filterClicked="filterClicked"/>
+        <filters v-on:filterClicked="filterClicked" />
         <div class="row">
             <div class="col-sm-10">
-                <song-item v-for="post in seenOrUnseen" :key="post.id" :song="post" :user="user" :postsOrReposts="postsOrReposts" v-on:likedTrack="likedTrack($event)" :skim="!playOrSkim"/>
-                <div class="allCaughtUp"><span class="line">&nbsp; &nbsp; &nbsp; &nbsp; </span>ALL CAUGHT UP<span class="line">&nbsp; &nbsp; &nbsp; &nbsp; </span></div>
-            </div>
-            <div class="col-sm-2">
-                <h2>Who to follow</h2>
-                <h2>Likes</h2>
-                <likes :likes="userlikes" />
+                <div class="slidecontainer">
+                    <div class="title">LIKE THRESHOLD <span>{{threshold}}</span></div>
+                    <input type="range" min="1" max="50" value="25" class="slider" v-model="threshold">
+                </div>
+                    <song-item v-for="post in seenOrUnseen" :key="post.id" :song="post" :user="user" :postsOrReposts="postsOrReposts" v-on:likedTrack="likedTrack($event)" :skim="!playOrSkim" />
+                    <div class="allCaughtUp"><span class="line">&nbsp; &nbsp; &nbsp; &nbsp; </span>ALL CAUGHT UP<span class="line">&nbsp; &nbsp; &nbsp; &nbsp; </span></div>
+                </div>
+                <div class="col-sm-2">
+                    <h2>Who to follow</h2>
+                    <h2>Likes</h2>
+                    <likes :likes="userlikes" />
 
-                <h2>Listening History</h2>
+                    <h2>Listening History</h2>
+                </div>
             </div>
+
         </div>
-
-    </div>
 </section>
 </template>
 
@@ -85,6 +89,7 @@ export default {
             allOrUnseen: true,
             playOrSkim: true,
             postsOrReposts: false,
+            threshold: 5
 
         }
     },
@@ -94,7 +99,7 @@ export default {
             console.log(event)
             this.updateLikes(event.id, event)
         },
-        filterClicked(value){
+        filterClicked(value) {
             console.log(value)
             switch (value.name) {
                 case 'playSkim':
@@ -153,13 +158,13 @@ export default {
         unplayedPosts() {
             let that = this
             return this.feed.filter(function (u) {
-                
+
                 console.log(that.alreadyPlayedTracks)
                 return !that.alreadyPlayedTracks.includes(u)
             })
         },
-        seenOrUnseen(){
-            if(this.allOrUnseen == true) return this.feed
+        seenOrUnseen() {
+            if (this.allOrUnseen == true) return this.feed
             else return this.unplayedPosts
         }
 
@@ -183,9 +188,67 @@ section.stream {
     font-weight: 900;
     color: $orangeColour;
     font-size: 1.75em;
+
     .line {
         text-decoration: line-through;
         padding: 0 0.5em;
     }
+}
+
+.slidecontainer {
+    width: 100%;
+    /* Width of the outside container */
+    height: 25px;
+    margin-bottom: 2em;
+
+    .title {
+        position: relative;
+        top: 13px;
+        font-size: 2em;
+        // text-align: center;
+        color: rgb(211, 211, 211);
+        font-weight: 900;
+        z-index: -1;
+
+        span {
+            color: black;
+        }
+    }
+}
+
+/* The slider itself */
+.slider {
+    -webkit-appearance: none;
+    /* Override default CSS styles */
+    appearance: none;
+    width: 100%;
+    /* Full-width */
+    height: 8px;
+    /* Specified height */
+    background: $orangeColour;
+    /* Grey background */
+    outline: none;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+    opacity: 1;
+    /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    /* Override default look */
+    appearance: none;
+    width: 25px;
+    /* Set a specific slider handle width */
+    height: 25px;
+    /* Slider handle height */
+    background: black;
+    /* Green background */
+    border-radius: 50%;
+    cursor: pointer;
+    /* Cursor on hover */
 }
 </style>
